@@ -1,0 +1,42 @@
+<div class="row mt-4" style="width: 100%">
+    <div class="col-6 d-flex justify-content-center">
+        <mat-table class="mat-elevation-z8" [dataSource]="board1.dataSource" id="board1">
+            <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
+                <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+                <mat-cell *matCellDef="let row"
+                    [ngClass]="cellBackground(row[column])"
+                    (click)="isPlayable && checkCell(board1, row[column])" (contextmenu)="$event.preventDefault(); isPlayable && flag(row[column])">
+                    <mat-icon *ngIf="row[column].status === 'flag'">flag</mat-icon>
+                    <img *ngIf="row[column].status === 'clear' && row[column].mine" style="width:24px;height:24px" src="assets/images/mine.svg">
+                    <span
+                        *ngIf="row[column].status === 'clear' && !row[column].mine && row[column].surroundingMines != 0">{{row[column].surroundingMines}}</span>
+                </mat-cell>
+            </ng-container>
+
+            <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+
+
+
+    <div class="col-6 d-flex justify-content-center">
+        <mat-table class="mat-elevation-z8" [dataSource]="board2.dataSource" id="board2">
+            <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
+                <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+                <mat-cell *matCellDef="let row"
+                    [ngClass]="cellBackground(row[column])"
+                    (click)="isPlayable && checkCell(board2, row[column])" (contextmenu)="$event.preventDefault(); isPlayable && flag(row[column])">
+                    <mat-icon *ngIf="row[column].status === 'flag'">flag</mat-icon>
+                    <img *ngIf="row[column].status === 'clear' && row[column].mine" style="width:24px;height:24px" src="assets/images/mine.svg">
+                    <span
+                        *ngIf="row[column].status === 'clear' && !row[column].mine && row[column].surroundingMines != 0">{{row[column].surroundingMines}}</span>
+                </mat-cell>
+            </ng-container>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+</div>
+
+<button class="mt-4" (click)="reset()">Restart</button>
