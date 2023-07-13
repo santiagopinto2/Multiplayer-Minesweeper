@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Board } from './board';
 import { Cell } from './cell';
 
@@ -11,25 +11,31 @@ import { Cell } from './cell';
 export class GameComponent implements OnInit {
 
 
-    board1: Board = new Board(0, 0);
-    board2: Board = new Board(0, 0);
-
+    board: Board = new Board(0, 0);
     displayedColumns = [];
-    rowSize = 10;
-    numberOfMines = 4;
+    @Input() rowSize = 10;
+    @Input() numberOfMines = 4;
+    @Input() boardId = '';
     isPlayable = true;
 
 
 
     constructor() {
-        this.reset();
     }
 
     ngOnInit(): void {
-        const table1 = document.getElementById('board1');
-        table1.style.width = `${49 * this.rowSize}px`;
-        const table2 = document.getElementById('board2');
-        table2.style.width = `${49 * this.rowSize}px`;
+        this.board = this.newBoard();
+        for (let i = 0; i < this.rowSize; i++) this.displayedColumns.push(i.toString());
+        this.setTableWidth();
+    }
+
+    ngAfterViewInit() {
+        this.setTableWidth();
+    }
+
+    setTableWidth() {
+        const table = document.getElementById(this.boardId);
+        if (!!table) table.style.width = `${49 * this.rowSize}px`;
     }
 
     checkCell(board, cell: Cell) {
@@ -52,14 +58,6 @@ export class GameComponent implements OnInit {
     flag(cell: Cell) {
         if (cell.status === 'flag') cell.status = 'hidden';
         else if (cell.status === 'hidden') cell.status = 'flag';
-    }
-
-    reset() {
-        this.displayedColumns = [];
-        for (let i = 0; i < this.rowSize; i++) this.displayedColumns.push(i.toString());
-
-        this.board1 = this.newBoard();
-        this.board2 = this.newBoard();
     }
 
     newBoard() {

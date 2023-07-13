@@ -9,6 +9,7 @@ import { SharedMaterialModule } from './shared-material/shared-material.module';
 import { GameComponent } from './components/game/game.component';
 import { PlayComponent } from './components/play/play.component';
 import { AboutComponent } from './components/about/about.component';
+import { MatchComponent } from './components/play/match/match.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AboutComponent } from './components/about/about.component';
         AppComponent,
         GameComponent,
         PlayComponent,
-        AboutComponent
+        AboutComponent,
+        MatchComponent
     ],
     imports: [
         BrowserModule,

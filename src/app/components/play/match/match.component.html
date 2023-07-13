@@ -1,0 +1,10 @@
+<div class="row mt-4" style="width: 100%">
+    <div class="col-6 d-flex justify-content-center">
+        <app-game [rowSize]="rowSize" [numberOfMines]="numberOfMines" boardId="board1"></app-game>
+    </div>
+    <div class="col-6 d-flex justify-content-center">
+        <app-game [rowSize]="rowSize" [numberOfMines]="numberOfMines" boardId="board2"></app-game>
+    </div>
+</div>
+
+<button class="mt-4" (click)="reset()">Restart</button>
