@@ -10,23 +10,26 @@ import { GameComponent } from '../../game/game.component';
 export class MatchComponent implements OnInit {
 
 
-    rowSize = 10;
-    numberOfMines = 5;
+    rowSize = [10, 10];
+    defaultNumberofMines = 2;
+    numberOfMines = [this.defaultNumberofMines, this.defaultNumberofMines];
 
     @ViewChildren(GameComponent) boards: QueryList<GameComponent>;
 
+    
     constructor() { }
 
     ngOnInit(): void {
     }
 
-    newBoard() {
-        let board = new Board(this.rowSize, this.numberOfMines);
-        for (let i = 0; i < this.rowSize; i++) board.dataSource.push(board.cells[i]);
-        return board;
+    reset() {
+        this.rowSize = [10, 10];
+        this.numberOfMines = [this.defaultNumberofMines, this.defaultNumberofMines];
+        this.boards.forEach(board => board.board = board.newBoard());
     }
 
-    reset() {
-        this.boards.forEach(board => board.board = this.newBoard());
+    hasWon(event, board) {
+        Object.assign(this.boards.toArray()[board].board, this.boards.toArray()[board].newBoard(this.numberOfMines[board] + 1));
+        this.numberOfMines[board]++;
     }
 }

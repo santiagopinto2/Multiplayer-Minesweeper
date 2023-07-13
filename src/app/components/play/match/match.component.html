@@ -1,9 +1,24 @@
 <div class="row mt-4" style="width: 100%">
     <div class="col-6 d-flex justify-content-center">
-        <app-game [rowSize]="rowSize" [numberOfMines]="numberOfMines" boardId="board1"></app-game>
+        <mat-card>
+            <p class="game-stats">Number of Mines: {{numberOfMines[0]}}</p>
+        </mat-card>
     </div>
     <div class="col-6 d-flex justify-content-center">
-        <app-game [rowSize]="rowSize" [numberOfMines]="numberOfMines" boardId="board2"></app-game>
+        <mat-card>
+            <p class="game-stats">Number of Mines: {{numberOfMines[1]}}</p>
+        </mat-card>
+    </div>
+</div>
+
+<div class="row mt-4" style="width: 100%">
+    <div class="col-6 d-flex justify-content-center">
+        <app-game [rowSize]="rowSize[0]" [numberOfMines]="numberOfMines[0]" boardId="board1"
+            (wonEmitter)="hasWon($event, 0)"></app-game>
+    </div>
+    <div class="col-6 d-flex justify-content-center">
+        <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="board2"
+            (wonEmitter)="hasWon($event, 1)"></app-game>
     </div>
 </div>
 

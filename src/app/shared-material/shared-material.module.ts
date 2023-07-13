@@ -8,6 +8,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { FormsModule } from "@angular/forms";
 import { MatListModule } from "@angular/material/list";
+import { MatCardModule } from "@angular/material/card";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MatListModule } from "@angular/material/list";
         MatSidenavModule,
         MatCheckboxModule,
         FormsModule,
-        MatListModule
+        MatListModule,
+        MatCardModule
     ],
     exports: [
         MatTableModule,
@@ -31,7 +33,8 @@ import { MatListModule } from "@angular/material/list";
         MatSidenavModule,
         MatCheckboxModule,
         FormsModule,
-        MatListModule
+        MatListModule,
+        MatCardModule
     ]
 })
 
