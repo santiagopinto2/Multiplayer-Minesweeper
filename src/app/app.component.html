@@ -1,1 +1,32 @@
-<app-game></app-game>
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+        (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span style="margin:0 10px">Multiplayer Minesweeper</span>
+    
+    <div>
+        <a mat-button class="header-option" [routerLink]="'/play'"> Play </a>
+        <a mat-button class="header-option" [routerLink]="'/about'"> About </a>
+    </div>
+    <span class="header-spacer"></span>
+
+    <button mat-icon-button>
+        <mat-icon>discord</mat-icon>
+    </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav>
+        <mat-nav-list style="width: 150px; padding: 0">
+            <a mat-list-item class="sidenav-option" [routerLink]="'/play'"> Play </a>
+            <a mat-list-item class="sidenav-option" [routerLink]="'/about'"> About </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

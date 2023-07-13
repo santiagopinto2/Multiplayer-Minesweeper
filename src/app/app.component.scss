@@ -1,0 +1,24 @@
+.sidenav-container {
+    position: fixed !important;
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
+}
+
+.header-spacer {
+    flex: 1 1 auto;
+}
+
+.header-option {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.header-option:hover {
+    cursor: pointer;
+}
+
+.sidenav-option {
+    font-size: 18px;
+}
