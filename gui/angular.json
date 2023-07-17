@@ -115,5 +115,7 @@
             }
         }
     },
-    "defaultProject": "minesweeper"
+    "cli": {
+      "analytics": false
+    }
 }

@@ -9,6 +9,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { FormsModule } from "@angular/forms";
 import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MatCardModule } from "@angular/material/card";
         MatCheckboxModule,
         FormsModule,
         MatListModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule
     ],
     exports: [
         MatTableModule,
@@ -34,7 +36,8 @@ import { MatCardModule } from "@angular/material/card";
         MatCheckboxModule,
         FormsModule,
         MatListModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule
     ]
 })
 
