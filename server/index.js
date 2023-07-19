@@ -5,14 +5,15 @@ const io = require('socket.io')(httpServer, {
     origins: ['*']
 });
 
+const { createBoards } = require('./util/create-boards');
 
 
 io.on('connection', socket => {
-    console.log('A player has connected');
+    console.log('A player has connected ');
     
     socket.on('gameStart', ({ gameId }) => {
-        createGame().then(data => {
-            io.to(gameId).emit('gameStart', data);
+        createBoards().then(cells => {
+            io.to(gameId).emit('gameStart', cells);
             console.log("A new game is starting");
         })
     });
@@ -24,7 +25,7 @@ io.on('connection', socket => {
     });
 
     socket.on('gameUpdate', ({ gameId, data }) => {
-        io.to(gameId).emit(gameId, data);
+        socket.to(gameId).emit(gameId, data);
     });
 });
 

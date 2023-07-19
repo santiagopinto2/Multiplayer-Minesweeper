@@ -18,6 +18,7 @@ export class GameComponent implements OnInit {
     @Input() numberOfMines = 4;
     @Input() boardId = '';
     @Output() wonEmitter: EventEmitter<boolean> = new EventEmitter();
+    @Output() gameUpdate: EventEmitter<any> = new EventEmitter();
     hasWon = false;
     isPlayable = true;
 
@@ -41,12 +42,13 @@ export class GameComponent implements OnInit {
         if (!!table) table.style.width = `${49 * this.rowSize}px`;
     }
 
-    checkCell(board, cell: Cell) {
-        if (cell.status === 'clear' && cell.surroundingMines != 0) this.checkSurroundings(board, cell);
+    checkCell(cell: Cell) {
+        this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
+        if (cell.status === 'clear' && cell.surroundingMines != 0) this.checkSurroundings(this.board, cell);
         else {
-            const result = board.checkCell(cell);
-            if (result === 'gameover') this.gameover(board);
-            else if (result === 'win') this.win(board);
+            const result = this.board.checkCell(cell);
+            if (result === 'gameover') this.gameover(this.board);
+            else if (result === 'win') this.win(this.board);
         }
     }
 
@@ -59,12 +61,13 @@ export class GameComponent implements OnInit {
     }
 
     flag(cell: Cell) {
+        this.gameUpdate.emit({ cell: cell, type: 'flag' });
         if (cell.status === 'flag') cell.status = 'hidden';
         else if (cell.status === 'hidden') cell.status = 'flag';
     }
 
-    newBoard(numberOfMines = this.numberOfMines) {
-        let board = new Board(this.rowSize, numberOfMines);
+    newBoard(numberOfMines = this.numberOfMines, fullCells?) {
+        let board = fullCells ? new Board(this.rowSize, numberOfMines, fullCells) : new Board(this.rowSize, numberOfMines);
         for (let i = 0; i < this.rowSize; i++) board.dataSource.push(board.cells[i]);
         return board;
     }

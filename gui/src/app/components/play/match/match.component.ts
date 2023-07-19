@@ -16,6 +16,8 @@ export class MatchComponent implements OnInit {
     rowSize = [10, 10];
     defaultNumberofMines = 2;
     numberOfMines = [this.defaultNumberofMines, this.defaultNumberofMines];
+    playerId = 1;
+    fullCells = [];
 
     @ViewChildren(GameComponent) boards: QueryList<GameComponent>;
 
@@ -35,24 +37,14 @@ export class MatchComponent implements OnInit {
         this.receiveGameUpdate();
     }
 
-    receiveGameJoin() {
-        this.socketIoService.receiveGameJoin().subscribe((message: string) => {
-            this.snackbar.open(message, '', {
-                duration: 3000,
-            });
-        });
+    gameStart() {
+        this.socketIoService.gameStart(this.gameId);
     }
 
-    receiveGameStart() {
-        this.socketIoService.receiveGameStart().subscribe((data) => {
-            console.log('receiveGameStart', data);
-        });
-    }
-
-    receiveGameUpdate() {
-        this.socketIoService.receiveGameUpdate(this.gameId).subscribe((data) => {
-            console.log('receiveGameUpdate', data);
-        });
+    gameUpdate(event, boardId) {
+        if (this.playerId != boardId) return;
+        event.boardId = boardId;
+        this.socketIoService.gameUpdate(this.gameId, event);
     }
 
     reset() {
@@ -61,8 +53,34 @@ export class MatchComponent implements OnInit {
         this.boards.forEach(board => board.board = board.newBoard());
     }
 
-    hasWon(event, board) {
-        Object.assign(this.boards.toArray()[board].board, this.boards.toArray()[board].newBoard(this.numberOfMines[board] + 1));
-        this.numberOfMines[board]++;
+    hasWon(event, boardId) {
+        Object.assign(this.boards.toArray()[boardId].board, this.boards.toArray()[boardId].newBoard(this.numberOfMines[boardId] + 1, this.fullCells[this.numberOfMines[boardId] + 1 - this.defaultNumberofMines]));
+        this.numberOfMines[boardId]++;
+    }
+
+    receiveGameJoin() {
+        this.socketIoService.receiveGameJoin().subscribe((message: string) => {
+            this.snackbar.open(message, '', {
+                duration: 3000,
+            });
+            this.playerId = 0;
+        });
+    }
+
+    receiveGameStart() {
+        this.socketIoService.receiveGameStart().subscribe((data: any) => {
+            console.log('receiveGameStart', data);
+            this.fullCells = data;
+            Object.assign(this.boards.toArray()[0].board, this.boards.toArray()[0].newBoard(this.numberOfMines[0], this.fullCells[this.numberOfMines[0] - this.defaultNumberofMines]));
+            Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.fullCells[this.numberOfMines[1] - this.defaultNumberofMines]));
+        });
+    }
+
+    receiveGameUpdate() {
+        this.socketIoService.receiveGameUpdate(this.gameId).subscribe((data: any) => {
+            console.log('receiveGameUpdate', data);
+            if (data.type === 'checkCell') this.boards.toArray()[data.boardId].checkCell(data.cell);
+            else if (data.type === 'flag') this.boards.toArray()[data.boardId].flag(data.cell);
+        });
     }
 }

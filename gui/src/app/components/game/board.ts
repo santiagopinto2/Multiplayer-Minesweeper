@@ -9,7 +9,33 @@ export class Board {
     private remainingCells = 0;
     private mineCount = 0;
 
-    constructor(size: number, mines: number) {
+    constructor(size: number, mines: number, fullCells?: [][]) {
+        if (fullCells) {
+            this.remainingCells = size * size;
+            for (let y = 0; y < fullCells.length; y++) {
+                this.cells[y] = [];
+                for (let x = 0; x < fullCells[y].length; x++) {
+                    this.cells[y][x] = new Cell(y, x, fullCells[y][x]);
+
+                    let adjacentMines = 0;
+                    for (const peer of PEERS) {
+                        if (
+                            fullCells[y + peer[0]] != undefined &&
+                            fullCells[y + peer[0]][x + peer[1]] != undefined &&
+                            fullCells[y + peer[0]][x + peer[1]]
+                        ) {
+                            adjacentMines++;
+                        }
+                    }
+                    this.cells[y][x].surroundingMines = adjacentMines;
+
+                    if (this.cells[y][x].mine) this.mineCount++;
+                }
+            }
+            this.remainingCells -= this.mineCount;
+            return;
+        }
+
         for (let y = 0; y < size; y++) {
             this.cells[y] = [];
             for (let x = 0; x < size; x++) this.cells[y][x] = new Cell(y, x);
@@ -20,7 +46,7 @@ export class Board {
             let cell;
             do {
                 cell = this.getRandomCell();
-            } while(cell.mine);
+            } while (cell.mine);
             cell.mine = true;
         }
 

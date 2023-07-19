@@ -2,7 +2,7 @@
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
         <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
         <mat-cell *matCellDef="let row" [ngClass]="cellBackground(row[column])"
-            (click)="isPlayable && checkCell(board, row[column])"
+            (click)="isPlayable && checkCell(row[column])"
             (contextmenu)="$event.preventDefault(); isPlayable && flag(row[column])">
             <mat-icon *ngIf="row[column].status === 'flag'">flag</mat-icon>
             <img *ngIf="row[column].status === 'clear' && row[column].mine" style="width:24px;height:24px"

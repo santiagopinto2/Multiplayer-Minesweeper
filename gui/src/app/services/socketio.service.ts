@@ -21,8 +21,8 @@ export class SocketioService {
     this.socket.emit('gameStart', { gameId: gameId });
   }
 
-  gameUpdate(gameId) {
-    this.socket.emit('gameUpdate', { gameId: gameId });
+  gameUpdate(gameId, data) {
+    this.socket.emit('gameUpdate', { gameId: gameId, data: data });
   }
 
   receiveGameJoin() {

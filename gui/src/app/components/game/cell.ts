@@ -3,5 +3,7 @@ export class Cell {
     mine = false;
     surroundingMines = 0;
 
-    constructor(public row: number, public column: number) { }
+    constructor(public row: number, public column: number, mine = false) {
+        this.mine = mine;
+    }
 }
