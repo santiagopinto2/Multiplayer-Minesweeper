@@ -5,27 +5,29 @@ const io = require('socket.io')(httpServer, {
     origins: ['*']
 });
 
-const { createBoards } = require('./util/create-boards');
+const { createAllBoards, createBoard } = require('./util/create-boards');
 
 
 io.on('connection', socket => {
     console.log('A player has connected ');
-    
+
     socket.on('gameStart', ({ gameId }) => {
-        createBoards().then(cells => {
-            io.to(gameId).emit('gameStart', cells);
-            console.log("A new game is starting");
-        })
+        io.to(gameId).emit('gameStart', createAllBoards());
+        console.log('A new game is starting');
     });
 
     socket.on('gameJoin', ({ gameId }) => {
         socket.join(gameId);
-        console.log("A player has joined the game " + gameId);
-        socket.to(gameId).emit('gameJoin', "A player has joined the game!");
+        console.log('A player has joined the game ' + gameId);
+        socket.to(gameId).emit('gameJoin', 'A player has joined the game!');
     });
 
     socket.on('gameUpdate', ({ gameId, data }) => {
-        socket.to(gameId).emit(gameId, data);
+        socket.to(gameId).emit('gameUpdate', data);
+    });
+
+    socket.on('newBoard', ({ gameId, data }) => {
+        io.to(gameId).emit('newBoard', { boardId: data.boardId, cells: createBoard(data.mines) });
     });
 });
 

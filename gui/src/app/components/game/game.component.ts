@@ -17,7 +17,9 @@ export class GameComponent implements OnInit {
     @Input() rowSize = 10;
     @Input() numberOfMines = 4;
     @Input() boardId = '';
+    @Input() playerId: number;
     @Output() wonEmitter: EventEmitter<boolean> = new EventEmitter();
+    @Output() lostEmitter: EventEmitter<boolean> = new EventEmitter();
     @Output() gameUpdate: EventEmitter<any> = new EventEmitter();
     hasWon = false;
     isPlayable = true;
@@ -43,6 +45,7 @@ export class GameComponent implements OnInit {
     }
 
     checkCell(cell: Cell) {
+        cell = this.board.cells[cell.row][cell.column];
         this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
         if (cell.status === 'clear' && cell.surroundingMines != 0) this.checkSurroundings(this.board, cell);
         else {
@@ -61,6 +64,7 @@ export class GameComponent implements OnInit {
     }
 
     flag(cell: Cell) {
+        cell = this.board.cells[cell.row][cell.column];
         this.gameUpdate.emit({ cell: cell, type: 'flag' });
         if (cell.status === 'flag') cell.status = 'hidden';
         else if (cell.status === 'hidden') cell.status = 'flag';
@@ -84,7 +88,7 @@ export class GameComponent implements OnInit {
     async gameover(board) {
         this.isPlayable = false;
         await this.sleep(1000);
-        Object.assign(board, this.newBoard());
+        this.lostEmitter.emit(true);
         this.isPlayable = true;
     }
 
@@ -93,6 +97,10 @@ export class GameComponent implements OnInit {
         if (!this.isPlayable && !this.hasWon) return 'red-cell';
         if (cell.status === 'hidden' || cell.status === 'flag') return 'light-cell';
         return 'dark-cell';
+    }
+
+    stringToNumber(number) {
+        return Number(number);
     }
 
     sleep(ms) {

@@ -16,7 +16,7 @@ export class Board {
                 this.cells[y] = [];
                 for (let x = 0; x < fullCells[y].length; x++) {
                     this.cells[y][x] = new Cell(y, x, fullCells[y][x]);
-
+                    
                     let adjacentMines = 0;
                     for (const peer of PEERS) {
                         if (
@@ -28,7 +28,6 @@ export class Board {
                         }
                     }
                     this.cells[y][x].surroundingMines = adjacentMines;
-
                     if (this.cells[y][x].mine) this.mineCount++;
                 }
             }
@@ -64,7 +63,6 @@ export class Board {
                     }
                 }
                 this.cells[y][x].surroundingMines = adjacentMines;
-
                 if (this.cells[y][x].mine) this.mineCount++;
             }
         }
