@@ -3,7 +3,7 @@
         <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
         <mat-cell *matCellDef="let row" [ngClass]="cellBackground(row[column])"
             (click)="isPlayable && (playerId == stringToNumber(boardId)) && checkCell(row[column])"
-            (contextmenu)="$event.preventDefault(); isPlayable && flag(row[column])">
+            (contextmenu)="$event.preventDefault(); isPlayable && (playerId == stringToNumber(boardId)) && flag(row[column])">
             <mat-icon *ngIf="row[column].status === 'flag'">flag</mat-icon>
             <img *ngIf="row[column].status === 'clear' && row[column].mine" style="width:24px;height:24px"
                 src="assets/images/mine.svg">

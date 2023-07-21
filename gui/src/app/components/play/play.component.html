@@ -1,1 +1,59 @@
-<app-match></app-match>
+<div *ngIf="!gameStarted">
+    <div class="row" *ngIf="!gameStarted" style="margin-top: 30vh">
+        <div class="col-12 d-flex justify-content-center">
+            <mat-card style="max-width: 350px">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button mat-raised-button style="margin-top: 10px" [disabled]="!playerJoined"
+                            (click)="gameStart()">Start Game</button>
+                    </div>
+                </div>
+                <p class="mt-4 text-center">The Start Game button will be available once a second player has
+                    joined the room. Only the host is able to start the game. </p>
+            </mat-card>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center">
+            <mat-card style="max-width: 350px">
+                <p class="text-center"> Once the game starts, the host will use the
+                    board on the left while
+                    the other player uses the board on the right.</p>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="gameStarted">
+    <div class="row mt-4" style="width: 100%">
+        <div class="col-6 d-flex justify-content-center">
+            <mat-card>
+                <p class="game-stats">Number of Mines: {{numberOfMines[0]}}</p>
+            </mat-card>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <mat-card>
+                <p class="game-stats">Number of Mines: {{numberOfMines[1]}}</p>
+            </mat-card>
+        </div>
+    </div>
+
+    <div class="row mt-4" style="width: 100%">
+        <div class="col-6 d-flex justify-content-center">
+            <app-game [rowSize]="rowSize[0]" [numberOfMines]="numberOfMines[0]" boardId="0" [playerId]="playerId"
+                (wonEmitter)="hasWon($event, 0)" (gameUpdate)="gameUpdate($event, 0)"
+                (lostEmitter)="hasLost($event, 0)"></app-game>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="1" [playerId]="playerId"
+                (wonEmitter)="hasWon($event, 1)" (gameUpdate)="gameUpdate($event, 1)"
+                (lostEmitter)="hasLost($event, 1)"></app-game>
+        </div>
+    </div>
+
+    <div class="row  mt-4">
+        <div class="col-12 d-flex justify-content-center">
+            <button mat-raised-button *ngIf="gameStarted" class="m-4" (click)="gameStart()">Restart</button>
+        </div>
+    </div>
+</div>

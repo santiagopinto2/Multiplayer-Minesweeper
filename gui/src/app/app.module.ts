@@ -9,7 +9,6 @@ import { SharedMaterialModule } from './shared-material/shared-material.module';
 import { GameComponent } from './components/game/game.component';
 import { PlayComponent } from './components/play/play.component';
 import { AboutComponent } from './components/about/about.component';
-import { MatchComponent } from './components/play/match/match.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 
 
@@ -19,7 +18,6 @@ import { LobbyComponent } from './components/lobby/lobby.component';
         GameComponent,
         PlayComponent,
         AboutComponent,
-        MatchComponent,
         LobbyComponent
     ],
     imports: [

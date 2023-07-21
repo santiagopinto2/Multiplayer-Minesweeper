@@ -1,6 +1,16 @@
-<div class="box">
-    <button mat-raised-button (click)="createGame()">Host Game</button>
-</div>
-<div class="box">
-    <button mat-raised-button>Join Game</button>
+<div class="row" style="margin-top: 35vh">
+    <div class="col-12 d-flex justify-content-center">
+        <mat-card style="max-width: 350px">
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    <button mat-raised-button (click)="createGame()" style="margin-top: 10px">Host Game</button>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <button mat-raised-button style="margin-top: 10px">Join Game</button>
+                </div>
+            </div>
+            <p class="mt-4 text-center">The hosts starts and is in charge of the game. The other player can join by typing in the
+                code from the host or going to the same URL that the host has.</p>
+        </mat-card>
+    </div>
 </div>
