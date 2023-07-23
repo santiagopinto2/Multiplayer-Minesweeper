@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit, QueryList, ViewChildren } from '@angular/cor
 import { GameComponent } from '../game/game.component';
 import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs/internal/operators/take';
 
 @Component({
@@ -20,6 +20,7 @@ export class PlayComponent implements OnInit {
     playerId = 1;
     playerOneCells = [];
     playerTwoCells = [];
+    //change
     gameStarted = false;
     playerJoined = false;
 

@@ -2,21 +2,21 @@
     <div class="row" *ngIf="!gameStarted" style="margin-top: 30vh">
         <div class="col-12 d-flex justify-content-center">
             <mat-card style="max-width: 350px">
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-12 d-flex justify-content-center">
-                        <button mat-raised-button style="margin-top: 10px" [disabled]="!playerJoined"
-                            (click)="gameStart()">Start Game</button>
+                        <button mat-raised-button class="details-text" style="margin-top: 10px"
+                            [disabled]="!playerJoined" (click)="gameStart()">Start Game</button>
                     </div>
                 </div>
-                <p class="mt-4 text-center">The Start Game button will be available once a second player has
-                    joined the room. Only the host is able to start the game. </p>
+                <p class="mt-4 m-3 text-center details-text">The Start Game button will be available once a second
+                    player has joined the room. Only the host is able to start the game. </p>
             </mat-card>
         </div>
     </div>
     <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center">
             <mat-card style="max-width: 350px">
-                <p class="text-center"> Once the game starts, the host will use the
+                <p class="m-3 text-center details-text"> Once the game starts, the host will use the
                     board on the left while
                     the other player uses the board on the right.</p>
             </mat-card>
@@ -28,12 +28,12 @@
     <div class="row mt-4" style="width: 100%">
         <div class="col-6 d-flex justify-content-center">
             <mat-card>
-                <p class="game-stats">Number of Mines: {{numberOfMines[0]}}</p>
+                <p class="game-stats m-3">Number of Mines: {{numberOfMines[0]}}</p>
             </mat-card>
         </div>
         <div class="col-6 d-flex justify-content-center">
             <mat-card>
-                <p class="game-stats">Number of Mines: {{numberOfMines[1]}}</p>
+                <p class="game-stats m-3">Number of Mines: {{numberOfMines[1]}}</p>
             </mat-card>
         </div>
     </div>
@@ -53,7 +53,8 @@
 
     <div class="row  mt-4">
         <div class="col-12 d-flex justify-content-center">
-            <button mat-raised-button *ngIf="gameStarted" class="m-4" (click)="gameStart()">Restart</button>
+            <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text"
+                (click)="gameStart()">Restart</button>
         </div>
     </div>
 </div>
