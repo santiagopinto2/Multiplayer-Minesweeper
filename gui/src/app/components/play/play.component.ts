@@ -3,7 +3,6 @@ import { GameComponent } from '../game/game.component';
 import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { take } from 'rxjs/internal/operators/take';
 
 @Component({
     selector: 'app-play',
@@ -20,7 +19,6 @@ export class PlayComponent implements OnInit {
     playerId = 1;
     playerOneCells = [];
     playerTwoCells = [];
-    //change
     gameStarted = false;
     playerJoined = false;
 
@@ -44,10 +42,21 @@ export class PlayComponent implements OnInit {
         this.receiveNewBoard();
     }
 
+    ngAfterViewInit() {
+        this.boards.changes.subscribe((data: any) => {
+            Object.assign(this.boards.toArray()[0].board, this.boards.toArray()[0].newBoard(this.numberOfMines[0], this.playerOneCells[this.numberOfMines[0] - this.defaultNumberofMines]));
+            Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.playerTwoCells[this.numberOfMines[1] - this.defaultNumberofMines]));
+        })
+    }
+
     gameStart() {
+        this.reset();
+        this.socketIoService.gameStart(this.gameId);
+    }
+
+    reset() {
         this.rowSize = [10, 10];
         this.numberOfMines = [this.defaultNumberofMines, this.defaultNumberofMines];
-        this.socketIoService.gameStart(this.gameId);
     }
 
     gameUpdate(event, boardId) {
@@ -80,12 +89,14 @@ export class PlayComponent implements OnInit {
         this.socketIoService.receiveGameStart().subscribe((data: any) => {
             console.log('receiveGameStart', data);
             this.gameStarted = true;
+            this.reset();
             this.playerOneCells = data.playerOneCells;
             this.playerTwoCells = data.playerTwoCells;
-            this.zone.onMicrotaskEmpty.asObservable().pipe(take(1)).subscribe(() => {
+
+            if (this.boards.toArray().length != 0) {
                 Object.assign(this.boards.toArray()[0].board, this.boards.toArray()[0].newBoard(this.numberOfMines[0], this.playerOneCells[this.numberOfMines[0] - this.defaultNumberofMines]));
                 Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.playerTwoCells[this.numberOfMines[1] - this.defaultNumberofMines]));
-            });
+            }
         });
     }
 
