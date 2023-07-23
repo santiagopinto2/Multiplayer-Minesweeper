@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit, QueryList, ViewChildren } from '@angular/cor
 import { GameComponent } from '../game/game.component';
 import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { take } from 'rxjs/internal/operators/take';
 
 @Component({

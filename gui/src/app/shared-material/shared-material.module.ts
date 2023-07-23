@@ -1,15 +1,15 @@
 import { NgModule } from "@angular/core";
 
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from "@angular/material/button";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatLegacyCheckboxModule as MatCheckboxModule } from "@angular/material/legacy-checkbox";
 import { FormsModule } from "@angular/forms";
-import { MatListModule } from "@angular/material/list";
-import { MatCardModule } from "@angular/material/card";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
+import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
+import { MatLegacySnackBarModule as MatSnackBarModule } from "@angular/material/legacy-snack-bar";
 
 
 @NgModule({
