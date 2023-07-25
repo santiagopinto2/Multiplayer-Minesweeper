@@ -10,6 +10,9 @@ import { FormsModule } from "@angular/forms";
 import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -25,7 +28,10 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
         FormsModule,
         MatListModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule
     ],
     exports: [
         MatTableModule,
@@ -37,7 +43,10 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
         FormsModule,
         MatListModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule
     ]
 })
 

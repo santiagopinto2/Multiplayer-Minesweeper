@@ -17,8 +17,8 @@
         <div class="col-12 d-flex justify-content-center">
             <mat-card style="max-width: 350px">
                 <p class="m-3 text-center details-text"> Once the game starts, the host will use the
-                    board on the left while
-                    the other player uses the board on the right.</p>
+                    board on the left while the other player uses the board on the right. Only the host can control the
+                    settings.</p>
             </mat-card>
         </div>
     </div>
@@ -57,8 +57,38 @@
 
     <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center">
-            <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text"
-                (click)="gameStart()">Restart</button>
+            <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text" (click)="gameStart()"
+                [disabled]="!settingsFormControl.valid || playerId == 1">Restart</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <p class="settings-header">Levels</p>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <p class="settings-header">Starting Number of Mines</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <form [formGroup]="settingsFormControl">
+                    <mat-form-field class="settings-input">
+                        <input formControlName="numberOfBoards" type="number" matInput min="1" max="20"
+                            (input)="settingFormatter(numberOfBoards, 20)">
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <form [formGroup]="settingsFormControl">
+                    <mat-form-field class="settings-input">
+                        <input formControlName="startingNumberOfMines" type="number" matInput min="1" max="80"
+                            (input)="settingFormatter(startingNumberOfMines, 80)">
+                    </mat-form-field>
+                </form>
+            </div>
         </div>
     </div>
 </div>

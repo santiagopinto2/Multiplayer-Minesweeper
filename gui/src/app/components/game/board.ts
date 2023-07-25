@@ -85,7 +85,7 @@ export class Board {
             cell.status = 'clear';
 
             // Empty cell, let's clear the whole block.
-            if (cell.surroundingMines === 0) {
+            if (cell.surroundingMines == 0) {
                 for (const peer of PEERS) {
                     if (this.cells[cell.row + peer[0]] && this.cells[cell.row + peer[0]][cell.column + peer[1]])
                         this.checkCell(this.cells[cell.row + peer[0]][cell.column + peer[1]]);

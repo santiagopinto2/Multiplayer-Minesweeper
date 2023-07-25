@@ -3,6 +3,7 @@ import { GameComponent } from '../game/game.component';
 import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-play',
@@ -13,10 +14,17 @@ export class PlayComponent implements OnInit {
 
     gameId: string;
     socket: any;
+
+    settingsFormControl = new FormGroup({
+        numberOfBoards: new FormControl(10, [Validators.required, Validators.min(1), Validators.max(20)]),
+        startingNumberOfMines: new FormControl(2, [Validators.required, Validators.min(1), Validators.max(80)])
+    });
+    numberOfBoards = this.settingsFormControl.get('numberOfBoards');
+    startingNumberOfMines = this.settingsFormControl.get('startingNumberOfMines');
+
+    boardCounter = [0, 0];
+    numberOfMines = [this.startingNumberOfMines.value, this.startingNumberOfMines.value];
     rowSize = [10, 10];
-    numberOfBoards = 1;
-    startingNumberofMines = 2;
-    numberOfMines = [this.startingNumberofMines, this.startingNumberofMines];
     playerId = 1;
     playersCells = [];
     gameStarted = false;
@@ -47,18 +55,18 @@ export class PlayComponent implements OnInit {
 
     ngAfterViewInit() {
         this.boards.changes.subscribe((data: any) => {
-            Object.assign(this.boards.toArray()[0].board, this.boards.toArray()[0].newBoard(this.numberOfMines[0], this.playersCells[0][this.numberOfMines[0] - this.startingNumberofMines]));
-            Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.playersCells[1][this.numberOfMines[1] - this.startingNumberofMines]));
-        })
+            this.assignBoards();
+        });
     }
 
     gameStart() {
-        this.socketIoService.gameStart(this.gameId, { numberOfBoards: this.numberOfBoards, startingNumberOfMines: this.startingNumberofMines });
+        this.socketIoService.gameStart(this.gameId, { numberOfBoards: this.numberOfBoards.value, startingNumberOfMines: this.startingNumberOfMines.value });
     }
 
     reset() {
         this.rowSize = [10, 10];
-        this.numberOfMines = [this.startingNumberofMines, this.startingNumberofMines];
+        this.boardCounter = [0, 0];
+        this.numberOfMines[0] = this.numberOfMines[1] = this.startingNumberOfMines.value;
         this.gameFinished = false;
         this.hasWon[0] = this.hasWon[1] = false;
         this.isPlayable[0] = this.isPlayable[1] = true;
@@ -73,7 +81,7 @@ export class PlayComponent implements OnInit {
     async won(event, boardId) {
         this.hasWon[boardId] = true;
 
-        if (this.playersCells[boardId][this.numberOfMines[boardId] + 1 - this.startingNumberofMines] == undefined) {
+        if (this.playersCells[boardId][this.boardCounter[boardId] + 1] == undefined) {
             this.isPlayable[0] = this.isPlayable[1] = false;
             this.gameFinished = true;
             return;
@@ -82,7 +90,8 @@ export class PlayComponent implements OnInit {
         this.isPlayable[boardId] = false;
         await this.sleep(2000);
 
-        Object.assign(this.boards.toArray()[boardId].board, this.boards.toArray()[boardId].newBoard(this.numberOfMines[boardId] + 1, this.playersCells[boardId][this.numberOfMines[boardId] + 1 - this.startingNumberofMines]));
+        Object.assign(this.boards.toArray()[boardId].board, this.boards.toArray()[boardId].newBoard(this.numberOfMines[boardId] + 1, this.playersCells[boardId][this.boardCounter[boardId] + 1]));
+        this.boardCounter[boardId]++;
         this.numberOfMines[boardId]++;
 
         this.hasWon[boardId] = false;
@@ -109,13 +118,18 @@ export class PlayComponent implements OnInit {
         this.socketIoService.receiveGameStart().subscribe((data: any) => {
             console.log('receiveGameStart', data);
             this.gameStarted = true;
+
+            if (this.playerId == 1) {
+                this.numberOfBoards.disable();
+                this.startingNumberOfMines.disable();
+            }
+
+            this.numberOfBoards.setValue(data.numberOfBoards);
+            this.startingNumberOfMines.setValue(data.startingNumberOfMines);
             this.reset();
             this.playersCells = data.cells;
 
-            if (this.boards.toArray().length != 0) {
-                Object.assign(this.boards.toArray()[0].board, this.boards.toArray()[0].newBoard(this.numberOfMines[0], this.playersCells[0][this.numberOfMines[0] - this.startingNumberofMines]));
-                Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.playersCells[1][this.numberOfMines[1] - this.startingNumberofMines]));
-            }
+            if (this.boards.toArray().length != 0) this.assignBoards();
         });
     }
 
@@ -133,6 +147,19 @@ export class PlayComponent implements OnInit {
             Object.assign(this.boards.toArray()[data.boardId].board, this.boards.toArray()[data.boardId].newBoard(null, data.cells));
             this.isPlayable[data.boardId] = true;
         });
+    }
+
+    assignBoards() {
+        Object.assign(this.boards.toArray()[0].board, this.boards.toArray()[0].newBoard(this.numberOfMines[0], this.playersCells[0][0]));
+        Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.playersCells[1][0]));
+    }
+
+    settingFormatter(setting, max) {
+        if (!!setting.value) {
+            setting.setValue(Math.abs(setting.value));
+            if (setting.value > max) setting.setValue(max);
+        }
+        else setting.setValue(null);
     }
 
     sleep(ms) {

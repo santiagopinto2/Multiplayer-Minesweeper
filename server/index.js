@@ -12,7 +12,7 @@ io.on('connection', socket => {
     console.log('A player has connected ');
 
     socket.on('gameStart', ({ gameId, data }) => {
-        io.to(gameId).emit('gameStart', createAllBoards(data.numberOfBoards, data.startingNumberOfMines));
+        io.to(gameId).emit('gameStart', { cells: createAllBoards(data.numberOfBoards, data.startingNumberOfMines), numberOfBoards: data.numberOfBoards, startingNumberOfMines: data.startingNumberOfMines });
         console.log('A new game is starting', data);
     });
 
