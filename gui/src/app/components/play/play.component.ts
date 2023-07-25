@@ -17,7 +17,7 @@ export class PlayComponent implements OnInit {
 
     settingsFormControl = new FormGroup({
         numberOfBoards: new FormControl(10, [Validators.required, Validators.min(1), Validators.max(20)]),
-        startingNumberOfMines: new FormControl(2, [Validators.required, Validators.min(1), Validators.max(80)])
+        startingNumberOfMines: new FormControl(10, [Validators.required, Validators.min(1), Validators.max(80)])
     });
     numberOfBoards = this.settingsFormControl.get('numberOfBoards');
     startingNumberOfMines = this.settingsFormControl.get('startingNumberOfMines');
