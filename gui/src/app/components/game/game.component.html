@@ -8,7 +8,8 @@
             <img *ngIf="row[column].status === 'clear' && row[column].mine" style="width:24px;height:24px"
                 src="assets/images/mine.svg">
             <span
-                *ngIf="row[column].status === 'clear' && !row[column].mine && row[column].surroundingMines != 0">{{row[column].surroundingMines}}</span>
+                *ngIf="row[column].status === 'clear' && !row[column].mine && row[column].surroundingMines != 0">{{row[column].surroundingMines}}
+            </span>
         </mat-cell>
     </ng-container>
 

@@ -11,9 +11,9 @@ const { createAllBoards, createBoard } = require('./util/create-boards');
 io.on('connection', socket => {
     console.log('A player has connected ');
 
-    socket.on('gameStart', ({ gameId }) => {
-        io.to(gameId).emit('gameStart', createAllBoards());
-        console.log('A new game is starting');
+    socket.on('gameStart', ({ gameId, data }) => {
+        io.to(gameId).emit('gameStart', createAllBoards(data.numberOfBoards, data.startingNumberOfMines));
+        console.log('A new game is starting', data);
     });
 
     socket.on('gameJoin', ({ gameId }) => {

@@ -1,13 +1,16 @@
-function createAllBoards() {
-    return { playerOneCells: createPlayersBoard(), playerTwoCells: createPlayersBoard() };
+function createAllBoards(numberOfBoards, startingNumberOfMines) {
+    return { cells: createPlayersBoard(numberOfBoards, startingNumberOfMines) }
 }
 
-function createPlayersBoard() {
+function createPlayersBoard(numberOfBoards, startingNumberOfMines) {
     let cells = [];
-    const mines = 2;
+    const mines = startingNumberOfMines;
 
-    for (let i = 0; i < 10; i++) {
-        cells[i] = createBoard(mines + i);
+    for (let i = 0; i < 2; i++) {
+        cells[i] = [];
+        for (let j = 0; j < numberOfBoards; j++) {
+            cells[i][j] = createBoard(mines + j);
+        }
     }
 
     return cells;

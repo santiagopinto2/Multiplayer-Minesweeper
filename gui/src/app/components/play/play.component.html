@@ -41,17 +41,21 @@
     <div class="row mt-4" style="width: 100%">
         <div class="col-6 d-flex justify-content-center">
             <app-game [rowSize]="rowSize[0]" [numberOfMines]="numberOfMines[0]" boardId="0" [playerId]="playerId"
-                (wonEmitter)="hasWon($event, 0)" (gameUpdate)="gameUpdate($event, 0)"
-                (lostEmitter)="hasLost($event, 0)"></app-game>
+                [hasWon]="hasWon[0]" [isPlayable]="isPlayable[0]" (wonEmitter)="won($event, 0)"
+                (gameUpdate)="gameUpdate($event, 0)" (lostEmitter)="lost($event, 0)">
+            </app-game>
+            <p *ngIf="gameFinished && hasWon[0]" class="winner">Winner!</p>
         </div>
         <div class="col-6 d-flex justify-content-center">
             <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="1" [playerId]="playerId"
-                (wonEmitter)="hasWon($event, 1)" (gameUpdate)="gameUpdate($event, 1)"
-                (lostEmitter)="hasLost($event, 1)"></app-game>
+                [hasWon]="hasWon[1]" [isPlayable]="isPlayable[1]" (wonEmitter)="won($event, 1)"
+                (gameUpdate)="gameUpdate($event, 1)" (lostEmitter)="lost($event, 1)">
+            </app-game>
+            <p *ngIf="gameFinished && hasWon[1]" class="winner">Winner!</p>
         </div>
     </div>
 
-    <div class="row  mt-4">
+    <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center">
             <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text"
                 (click)="gameStart()">Restart</button>

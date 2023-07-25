@@ -7,7 +7,8 @@ import { LobbyComponent } from './components/lobby/lobby.component';
 const routes: Routes = [
     { path: 'play/:id', component: PlayComponent },
     { path: 'about', component: AboutComponent },
-    { path: 'lobby', component: LobbyComponent }
+    { path: 'lobby', component: LobbyComponent },
+    { path: '', redirectTo: '/lobby', pathMatch: 'full' }
 ];
 
 @NgModule({

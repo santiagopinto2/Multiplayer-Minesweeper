@@ -21,8 +21,8 @@ export class GameComponent implements OnInit {
     @Output() wonEmitter: EventEmitter<boolean> = new EventEmitter();
     @Output() lostEmitter: EventEmitter<boolean> = new EventEmitter();
     @Output() gameUpdate: EventEmitter<any> = new EventEmitter();
-    hasWon = false;
-    isPlayable = true;
+    @Input() hasWon = false;
+    @Input() isPlayable = true;
 
 
 
@@ -50,16 +50,16 @@ export class GameComponent implements OnInit {
         if (cell.status === 'clear' && cell.surroundingMines != 0) this.checkSurroundings(this.board, cell);
         else {
             const result = this.board.checkCell(cell);
-            if (result === 'gameover') this.gameover(this.board);
-            else if (result === 'win') this.win(this.board);
+            if (result === 'gameover') this.lost(this.board);
+            else if (result === 'win') this.won(this.board);
         }
     }
 
     checkSurroundings(board, cell) {
         if (cell.status === 'clear') {
             const result = board.checkSurroundings(cell);
-            if (result === 'gameover') this.gameover(board);
-            else if (result === 'win') this.win(board);
+            if (result === 'gameover') this.lost(board);
+            else if (result === 'win') this.won(board);
         }
     }
 
@@ -76,20 +76,12 @@ export class GameComponent implements OnInit {
         return board;
     }
 
-    async win(board) {
-        this.hasWon = true;
-        this.isPlayable = false;
-        await this.sleep(2000);
+    async won(board) {
         this.wonEmitter.emit(true);
-        this.hasWon = false;
-        this.isPlayable = true;
     }
 
-    async gameover(board) {
-        this.isPlayable = false;
-        await this.sleep(1000);
+    async lost(board) {
         this.lostEmitter.emit(true);
-        this.isPlayable = true;
     }
 
     cellBackground(cell) {
