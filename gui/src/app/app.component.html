@@ -1,17 +1,17 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
-        (click)="sidenav.toggle()">
+    <button mat-icon-button *ngIf="windowSize < 450" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
     </button>
     <span style="margin:0 10px">Minesweeper Melee</span>
 
-    <div>
+    <div *ngIf="windowSize >= 450">
         <a mat-button class="header-option" [routerLink]="'/lobby'" (click)="sidenav.close()"> Play </a>
         <a mat-button class="header-option" [routerLink]="'/about'" (click)="sidenav.close()"> About </a>
     </div>
+
     <span class="header-spacer"></span>
 
-    <button mat-icon-button (click)="goToDiscord()">
+    <button mat-icon-button *ngIf="windowSize >= 450" (click)="goToDiscord()">
         <mat-icon>discord</mat-icon>
     </button>
 </mat-toolbar>

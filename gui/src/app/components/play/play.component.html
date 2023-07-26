@@ -1,7 +1,7 @@
 <div *ngIf="!gameStarted">
     <div class="row" *ngIf="!gameStarted" style="margin-top: 30vh">
         <div class="col-12 d-flex justify-content-center">
-            <mat-card style="max-width: 350px">
+            <mat-card class="mx-1" style="max-width: 350px">
                 <div class="row mt-2">
                     <div class="col-12 d-flex justify-content-center">
                         <button mat-raised-button class="details-text" style="margin-top: 10px"
@@ -15,7 +15,7 @@
     </div>
     <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center">
-            <mat-card style="max-width: 350px">
+            <mat-card class="mx-1" style="max-width: 350px">
                 <p class="m-3 text-center details-text"> Once the game starts, the host will use the
                     board on the left while the other player uses the board on the right. Only the host can control the
                     settings.</p>
@@ -26,7 +26,7 @@
 
 <div *ngIf="gameStarted">
     <div class="row mt-4" style="width: 100%">
-        <div class="col-lg-6 mb-3 mb-lg-0">
+        <div class="col-lg-6 mb-4 mb-lg-0">
             <div class="row mb-3">
                 <div class="col-12 d-flex justify-content-center">
                     <mat-card>
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 mr-0">
             <div class="row mb-3">
                 <div class="col-12 d-flex justify-content-center">
                     <mat-card>
