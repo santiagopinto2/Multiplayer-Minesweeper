@@ -27,11 +27,13 @@ export class PlayComponent implements OnInit {
     rowSize = [10, 10];
     playerId = 1;
     playersCells = [];
+    event: any;
     gameStarted = false;
     playerJoined = false;
     gameFinished = true;
     hasWon = [false, false];
     isPlayable = [true, true];
+    isFirstClick = [true, true];
 
     @ViewChildren(GameComponent) boards: QueryList<GameComponent>;
 
@@ -70,11 +72,19 @@ export class PlayComponent implements OnInit {
         this.gameFinished = false;
         this.hasWon[0] = this.hasWon[1] = false;
         this.isPlayable[0] = this.isPlayable[1] = true;
+        this.isFirstClick[0] = this.isFirstClick[1] = true;
     }
 
     gameUpdate(event, boardId) {
         if (this.playerId != boardId) return;
         event.boardId = boardId;
+
+        if (this.isFirstClick[boardId] && event.type === 'checkCell') {
+            this.event = event;
+            this.socketIoService.newBoard(this.gameId, { boardId: boardId, mines: this.numberOfMines[boardId], firstClick: event.cell });
+            return;
+        }
+
         this.socketIoService.gameUpdate(this.gameId, event);
     }
 
@@ -95,6 +105,7 @@ export class PlayComponent implements OnInit {
         this.numberOfMines[boardId]++;
 
         this.hasWon[boardId] = false;
+        this.isFirstClick[boardId] = true;
         this.isPlayable[boardId] = true;
     }
 
@@ -136,8 +147,8 @@ export class PlayComponent implements OnInit {
     receiveGameUpdate() {
         this.socketIoService.receiveGameUpdate().subscribe((data: any) => {
             console.log('receiveGameUpdate', data);
-            if (data.type === 'checkCell') this.boards.toArray()[data.boardId].checkCell(data.cell);
-            else if (data.type === 'flag') this.boards.toArray()[data.boardId].flag(data.cell);
+            if (data.type === 'checkCell') this.boards.toArray()[data.boardId].checkCell(data.cell, true);
+            else if (data.type === 'flag') this.boards.toArray()[data.boardId].flag(data.cell, true);
         });
     }
 
@@ -145,6 +156,15 @@ export class PlayComponent implements OnInit {
         this.socketIoService.receiveNewBoard().subscribe((data: any) => {
             console.log('receiveNewBoard', data);
             Object.assign(this.boards.toArray()[data.boardId].board, this.boards.toArray()[data.boardId].newBoard(null, data.cells));
+
+            if (this.playerId == data.boardId && this.isFirstClick[data.boardId]) {
+                this.isFirstClick[data.boardId] = false;
+                this.boards.toArray()[data.boardId].isFirstClick = false;
+                if (this.event.type === 'checkCell') this.boards.toArray()[data.boardId].checkCell(this.event.cell);
+                else if (this.event.type === 'flag') this.boards.toArray()[data.boardId].flag(this.event.cell);
+            }
+            else this.isFirstClick[data.boardId] = true;
+            
             this.isPlayable[data.boardId] = true;
         });
     }

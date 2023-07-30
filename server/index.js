@@ -27,7 +27,7 @@ io.on('connection', socket => {
     });
 
     socket.on('newBoard', ({ gameId, data }) => {
-        io.to(gameId).emit('newBoard', { boardId: data.boardId, cells: createBoard(data.mines) });
+        io.to(gameId).emit('newBoard', { boardId: data.boardId, cells: createBoard(data.mines, data.firstClick || null) });
     });
 });
 

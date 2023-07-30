@@ -11,7 +11,7 @@ function createAllBoards(numberOfBoards, startingNumberOfMines) {
     return cells;
 }
 
-function createBoard(mines) {
+function createBoard(mines, firstClick = null) {
     let cells = [];
     const size = 10;
 
@@ -27,7 +27,7 @@ function createBoard(mines) {
             randomY = Math.floor(Math.random() * size);
             randomX = Math.floor(Math.random() * size);
             cell = cells[randomY][randomX];
-        } while (cell);
+        } while (cell || (!!firstClick && randomY == firstClick.row && randomX == firstClick.column));
         cells[randomY][randomX] = true;
     }
 

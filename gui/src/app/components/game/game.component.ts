@@ -23,6 +23,7 @@ export class GameComponent implements OnInit {
     @Output() gameUpdate: EventEmitter<any> = new EventEmitter();
     @Input() hasWon = false;
     @Input() isPlayable = true;
+    @Input() isFirstClick = true;
 
 
 
@@ -44,9 +45,12 @@ export class GameComponent implements OnInit {
         if (!!table) table.style.width = `${49 * this.rowSize}px`;
     }
 
-    checkCell(cell: Cell) {
+    checkCell(cell: Cell, fromServer = false) {
         cell = this.board.cells[cell.row][cell.column];
         this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
+        
+        if (this.isFirstClick && !fromServer) return;
+
         if (cell.status === 'clear' && cell.surroundingMines != 0) this.checkSurroundings(this.board, cell);
         else {
             const result = this.board.checkCell(cell);
@@ -63,7 +67,8 @@ export class GameComponent implements OnInit {
         }
     }
 
-    flag(cell: Cell) {
+    flag(cell: Cell, fromServer = false) {
+        if (this.isFirstClick && !fromServer) return;
         cell = this.board.cells[cell.row][cell.column];
         this.gameUpdate.emit({ cell: cell, type: 'flag' });
         if (cell.status === 'flag') cell.status = 'hidden';
@@ -76,11 +81,11 @@ export class GameComponent implements OnInit {
         return board;
     }
 
-    async won(board) {
+    won(board) {
         this.wonEmitter.emit(true);
     }
 
-    async lost(board) {
+    lost(board) {
         this.lostEmitter.emit(true);
     }
 
