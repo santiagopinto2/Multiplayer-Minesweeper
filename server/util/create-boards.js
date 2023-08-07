@@ -1,3 +1,5 @@
+const PEERS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+
 function createAllBoards(numberOfBoards, startingNumberOfMines) {
     let cells = [];
 
@@ -27,7 +29,20 @@ function createBoard(mines, firstClick = null) {
             randomY = Math.floor(Math.random() * size);
             randomX = Math.floor(Math.random() * size);
             cell = cells[randomY][randomX];
-        } while (cell || (!!firstClick && randomY == firstClick.row && randomX == firstClick.column));
+        } while (cell
+            || (!!firstClick
+                && ((randomY == firstClick.row && randomX == firstClick.column)
+                    || (randomY == firstClick.row + PEERS[0][0] && randomX == firstClick.column + PEERS[0][1])
+                    || (randomY == firstClick.row + PEERS[1][0] && randomX == firstClick.column + PEERS[1][1])
+                    || (randomY == firstClick.row + PEERS[2][0] && randomX == firstClick.column + PEERS[2][1])
+                    || (randomY == firstClick.row + PEERS[3][0] && randomX == firstClick.column + PEERS[3][1])
+                    || (randomY == firstClick.row + PEERS[4][0] && randomX == firstClick.column + PEERS[4][1])
+                    || (randomY == firstClick.row + PEERS[5][0] && randomX == firstClick.column + PEERS[5][1])
+                    || (randomY == firstClick.row + PEERS[6][0] && randomX == firstClick.column + PEERS[6][1])
+                    || (randomY == firstClick.row + PEERS[7][0] && randomX == firstClick.column + PEERS[7][1])
+                )
+            )
+        );
         cells[randomY][randomX] = true;
     }
 
