@@ -86,16 +86,16 @@
         <div class="row">
             <div class="col-6 d-flex justify-content-center">
                 <form [formGroup]="settingsFormControl">
-                    <mat-form-field class="settings-input">
-                        <input formControlName="numberOfBoards" type="number" matInput min="1" max="20"
+                    <mat-form-field class="settings-input" appearance="outline">
+                        <input formControlName="numberOfBoards" class="themed-text" type="number" matInput min="1" max="20"
                             (input)="settingFormatter(numberOfBoards, 20)">
                     </mat-form-field>
                 </form>
             </div>
             <div class="col-6 d-flex justify-content-center">
                 <form [formGroup]="settingsFormControl">
-                    <mat-form-field class="settings-input">
-                        <input formControlName="startingNumberOfMines" type="number" matInput min="1" max="80"
+                    <mat-form-field class="settings-input" appearance="outline">
+                        <input formControlName="startingNumberOfMines" class="themed-text" type="number" matInput min="1" max="80"
                             (input)="settingFormatter(startingNumberOfMines, 80)">
                     </mat-form-field>
                 </form>

@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { ColorSchemeService } from './services/color-scheme.service';
 
 
 @Component({
@@ -11,7 +12,9 @@ export class AppComponent {
     title = 'minesweeper';
     windowSize;
     
-    constructor() {}
+    constructor(public colorSchemeService: ColorSchemeService) {
+        this.colorSchemeService.load();
+    }
 
     ngOnInit() {
         this.windowSize = window.screen.width;
@@ -24,5 +27,9 @@ export class AppComponent {
 
     goToDiscord() {
         window.open('https://discord.gg/hW2r7Ssuaa', '_blank');
+    }
+
+    toggleDarkMode() {
+        this.colorSchemeService.update(this.colorSchemeService.currentActive() === 'dark' ? 'light' : 'dark');
     }
 }
