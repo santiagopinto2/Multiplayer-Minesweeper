@@ -21,6 +21,7 @@ export class GameComponent implements OnInit {
     @Output() wonEmitter: EventEmitter<boolean> = new EventEmitter();
     @Output() lostEmitter: EventEmitter<boolean> = new EventEmitter();
     @Output() gameUpdate: EventEmitter<any> = new EventEmitter();
+    @Input() gameStarting = false;
     @Input() hasWon = false;
     @Input() isPlayable = true;
     @Input() isFirstClick = true;
@@ -90,6 +91,7 @@ export class GameComponent implements OnInit {
     }
 
     cellBackground(cell) {
+        if (this.gameStarting) return 'dark-cell';
         if (!this.isPlayable && this.hasWon) return 'green-cell';
         if (!this.isPlayable && !this.hasWon) return 'red-cell';
         if (cell.status === 'hidden' || cell.status === 'flag') return 'light-cell';

@@ -4,6 +4,7 @@ import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
     selector: 'app-play',
@@ -28,7 +29,10 @@ export class PlayComponent implements OnInit {
     playerId = 1;
     playersCells = [];
     event: any;
+    subscribeTimer: Subscription;
+    startingTimer = 3;
     gameStarted = false;
+    gameStarting = false;
     playerJoined = false;
     gameFinished = true;
     hasWon = [false, false];
@@ -66,13 +70,25 @@ export class PlayComponent implements OnInit {
     }
 
     reset() {
+        if (!!this.subscribeTimer) this.subscribeTimer.unsubscribe();
+        this.gameStarting = true;
+        this.isPlayable[0] = this.isPlayable[1] = false;
         this.rowSize = [10, 10];
         this.boardCounter = [0, 0];
         this.numberOfMines[0] = this.numberOfMines[1] = this.startingNumberOfMines.value;
         this.gameFinished = false;
         this.hasWon[0] = this.hasWon[1] = false;
-        this.isPlayable[0] = this.isPlayable[1] = true;
         this.isFirstClick[0] = this.isFirstClick[1] = true;
+
+
+        this.subscribeTimer = timer(0, 1000).subscribe(val => {
+            this.startingTimer = 3 - val;
+            if (val == 3) {
+                this.subscribeTimer.unsubscribe();
+                this.gameStarting = false;
+                this.isPlayable[0] = this.isPlayable[1] = true;
+            }
+        });
     }
 
     gameUpdate(event, boardId) {
@@ -164,7 +180,7 @@ export class PlayComponent implements OnInit {
                 else if (this.event.type === 'flag') this.boards.toArray()[data.boardId].flag(this.event.cell);
             }
             else this.isFirstClick[data.boardId] = true;
-            
+
             this.isPlayable[data.boardId] = true;
         });
     }
@@ -174,7 +190,7 @@ export class PlayComponent implements OnInit {
         Object.assign(this.boards.toArray()[1].board, this.boards.toArray()[1].newBoard(this.numberOfMines[1], this.playersCells[1][0]));
     }
 
-    settingFormatter(setting, max) {
+    settingsFormatter(setting, max) {
         if (!!setting.value) {
             setting.setValue(Math.abs(setting.value));
             if (setting.value > max) setting.setValue(max);

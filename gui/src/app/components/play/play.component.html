@@ -37,11 +37,12 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <app-game [rowSize]="rowSize[0]" [numberOfMines]="numberOfMines[0]" boardId="0"
-                        [playerId]="playerId" [hasWon]="hasWon[0]" [isPlayable]="isPlayable[0]"
-                        [isFirstClick]="isFirstClick[0]" (wonEmitter)="won($event, 0)"
+                        [playerId]="playerId" [gameStarting]="gameStarting" [hasWon]=" hasWon[0]"
+                        [isPlayable]="isPlayable[0]" [isFirstClick]="isFirstClick[0]" (wonEmitter)="won($event, 0)"
                         (gameUpdate)="gameUpdate($event, 0)" (lostEmitter)="lost($event, 0)">
                     </app-game>
-                    <p *ngIf="gameFinished && hasWon[0]" class="winner">Winner!</p>
+                    <p *ngIf="gameStarting && playerId == 0" class="board-text">{{startingTimer}}</p>
+                    <p *ngIf="gameFinished && hasWon[0]" class="board-text">Winner!</p>
                 </div>
             </div>
         </div>
@@ -56,11 +57,12 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="1"
-                        [playerId]="playerId" [hasWon]="hasWon[1]" [isPlayable]="isPlayable[1]"
-                        [isFirstClick]="isFirstClick[1]" (wonEmitter)="won($event, 1)"
+                        [playerId]="playerId" [gameStarting]="gameStarting" [hasWon]=" hasWon[1]"
+                        [isPlayable]="isPlayable[1]" [isFirstClick]="isFirstClick[1]" (wonEmitter)="won($event, 1)"
                         (gameUpdate)="gameUpdate($event, 1)" (lostEmitter)="lost($event, 1)">
                     </app-game>
-                    <p *ngIf="gameFinished && hasWon[1]" class="winner">Winner!</p>
+                    <p *ngIf="gameStarting && playerId == 1" class="board-text">{{startingTimer}}</p>
+                    <p *ngIf="gameFinished && hasWon[1]" class="board-text">Winner!</p>
                 </div>
             </div>
         </div>
@@ -87,16 +89,16 @@
             <div class="col-6 d-flex justify-content-center">
                 <form [formGroup]="settingsFormControl">
                     <mat-form-field class="settings-input" appearance="outline">
-                        <input formControlName="numberOfBoards" class="themed-text" type="number" matInput min="1" max="20"
-                            (input)="settingFormatter(numberOfBoards, 20)">
+                        <input formControlName="numberOfBoards" class="themed-text" type="number" matInput min="1"
+                            max="20" (input)="settingsFormatter(numberOfBoards, 20)">
                     </mat-form-field>
                 </form>
             </div>
             <div class="col-6 d-flex justify-content-center">
                 <form [formGroup]="settingsFormControl">
                     <mat-form-field class="settings-input" appearance="outline">
-                        <input formControlName="startingNumberOfMines" class="themed-text" type="number" matInput min="1" max="80"
-                            (input)="settingFormatter(startingNumberOfMines, 80)">
+                        <input formControlName="startingNumberOfMines" class="themed-text" type="number" matInput
+                            min="1" max="80" (input)="settingsFormatter(startingNumberOfMines, 80)">
                     </mat-form-field>
                 </form>
             </div>
