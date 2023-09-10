@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class SocketioService {
     constructor() { }
 
     connect(gameId) {
-        this.socket = io('http://localhost:3000');
+        this.socket = io(environment.serverUrl);
         this.socket.emit('gameJoin', { gameId: gameId });
     }
 
