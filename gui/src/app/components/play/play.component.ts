@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-play',
@@ -81,6 +82,17 @@ export class PlayComponent implements OnInit {
         this.isFirstClick[0] = this.isFirstClick[1] = true;
 
 
+        /* let timerAudio = new Audio();
+        timerAudio.src = '../../assets/sounds/race_timer.mp3';
+        timerAudio.load();
+        timerAudio.muted = true;
+        timerAudio.muted = false;
+        var resp = timerAudio.play();
+        if (resp!== undefined) {
+            resp.then(() => {}).catch(error => {});
+        }
+        else console.log('resp is undefined') */
+
         this.subscribeTimer = timer(0, 1000).subscribe(val => {
             this.startingTimer = 3 - val;
             if (val == 3) {
@@ -143,7 +155,7 @@ export class PlayComponent implements OnInit {
 
     receiveGameStart() {
         this.socketIoService.receiveGameStart().subscribe((data: any) => {
-            console.log('receiveGameStart', data);
+            if (!environment.production) console.log('receiveGameStart', data);
             this.gameStarted = true;
 
             if (this.playerId == 1) {
@@ -162,7 +174,7 @@ export class PlayComponent implements OnInit {
 
     receiveGameUpdate() {
         this.socketIoService.receiveGameUpdate().subscribe((data: any) => {
-            console.log('receiveGameUpdate', data);
+            if (!environment.production) console.log('receiveGameUpdate', data);
             if (data.type === 'checkCell') this.boards.toArray()[data.boardId].checkCell(data.cell, true);
             else if (data.type === 'flag') this.boards.toArray()[data.boardId].flag(data.cell, true);
         });
@@ -170,7 +182,7 @@ export class PlayComponent implements OnInit {
 
     receiveNewBoard() {
         this.socketIoService.receiveNewBoard().subscribe((data: any) => {
-            console.log('receiveNewBoard', data);
+            if (!environment.production) console.log('receiveNewBoard', data);
             Object.assign(this.boards.toArray()[data.boardId].board, this.boards.toArray()[data.boardId].newBoard(null, data.cells));
 
             if (this.playerId == data.boardId && this.isFirstClick[data.boardId]) {

@@ -8,7 +8,7 @@ const routes: Routes = [
     { path: 'play/:id', component: PlayComponent },
     { path: 'about', component: AboutComponent },
     { path: 'lobby', component: LobbyComponent },
-    { path: '', redirectTo: '/lobby', pathMatch: 'full' }
+    { path: '', redirectTo: '/about', pathMatch: 'full' }
 ];
 
 @NgModule({
