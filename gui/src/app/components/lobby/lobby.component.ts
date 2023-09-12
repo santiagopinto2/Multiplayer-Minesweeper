@@ -22,6 +22,6 @@ export class LobbyComponent implements OnInit {
     }
 
     goToGame() {
-        this.router.navigate(['/play', this.code.value]);
+        this.router.navigate(['/play', this.code.value.toUpperCase()]);
     }
 }
