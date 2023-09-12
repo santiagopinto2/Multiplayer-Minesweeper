@@ -8,17 +8,20 @@
                             [disabled]="!playerJoined" (click)="gameStart()">Start Game</button>
                     </div>
                 </div>
-                <p class="mt-4 m-3 text-center details-text">The Start Game button will be available once a second
-                    player has joined the room. Only the host is able to start the game. </p>
+                <p class="m-3 text-center details-text">The first person to join this room will be the host. Only the host
+                    is able to start the game. The Start Game button will be available once a second player has joined
+                    this room.
+                </p>
             </mat-card>
         </div>
     </div>
     <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center">
             <mat-card class="mx-1 mat-elevation-z8" style="max-width: 350px">
-                <p class="m-3 text-center details-text"> Once the game starts, the host will use the
+                <p class="m-3 text-center details-text">Once the game starts, the host will use the
                     board on the left while the other player uses the board on the right. Only the host can control the
-                    settings.</p>
+                    settings.
+                </p>
             </mat-card>
         </div>
     </div>
@@ -70,8 +73,8 @@
 
     <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center">
-            <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text mat-elevation-z4" (click)="gameStart()"
-                [disabled]="!settingsFormControl.valid || playerId == 1">Restart</button>
+            <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text mat-elevation-z4"
+                (click)="gameStart()" [disabled]="!settingsFormControl.valid || playerId == 1">Restart</button>
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { GameComponent } from '../game/game.component';
 import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
@@ -46,8 +46,7 @@ export class PlayComponent implements OnInit {
     constructor(
         private socketIoService: SocketioService,
         private route: ActivatedRoute,
-        private snackbar: MatSnackBar,
-        private zone: NgZone
+        private snackbar: MatSnackBar
     ) { }
 
     ngOnInit(): void {

@@ -53,6 +53,10 @@ $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
     .themed-text {
         color: #FFFFFF !important;
     }
+
+    .disabled-icon:disabled {
+        color: #969696;
+    }
 }
 
 .color-scheme-light {
