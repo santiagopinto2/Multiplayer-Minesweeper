@@ -3,18 +3,18 @@
         <mat-card class="mx-1 mat-elevation-z8" style="max-width: 350px">
             <div class="row mt-3" style="margin-bottom: -10px">
                 <div class="col-12 d-flex justify-content-center">
-                    <form [formGroup]="codeFormControl">
+                    <form [formGroup]="codeFormControl" (ngSubmit)="goToGame()">
                         <mat-form-field appearance="outline" hideRequiredMarker="true">
                             <mat-label class="themed-text">Room code</mat-label>
                             <input formControlName="code" class="themed-text" style="text-transform: uppercase" matInput>
                         </mat-form-field>
+                        <div style="position: absolute; top: 20px; left: 280px">
+                            <button mat-icon-button class="disabled-icon" type="submit" [disabled]="!codeFormControl.valid">
+                                <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
                     </form>
                 </div>
-            </div>
-            <div style="position: absolute; top: 20px; left: 280px">
-                <button mat-icon-button class="disabled-icon" (click)="goToGame()" [disabled]="!codeFormControl.valid">
-                    <mat-icon>arrow_forward</mat-icon>
-                </button>
             </div>
             <p class="mt-0 m-3 text-center details-text">To join a room with another player, you must both put in the same
                 room code in the field above. It can be any code.
