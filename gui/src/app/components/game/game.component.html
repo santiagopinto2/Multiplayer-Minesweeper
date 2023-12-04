@@ -1,9 +1,12 @@
 <mat-table class="mat-elevation-z8" [dataSource]="board.dataSource" [id]="boardId">
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
         <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
-        <mat-cell *matCellDef="let row" class="test" [ngClass]="cellBackground(row[column])"
-            (click)="isPlayable && (playerId == stringToNumber(boardId)) && checkCell(row[column])"
-            (contextmenu)="$event.preventDefault(); isPlayable && (playerId == stringToNumber(boardId)) && flag(row[column])">
+        <mat-cell *matCellDef="let row" [ngClass]="cellBackground(row[column])"
+            (mousedown)="isPlayable && (playerId == stringToNumber(boardId)) && cellPressed(row[column], $event)"
+            (mouseup)="isPlayable && (playerId == stringToNumber(boardId)) && cellReleased(row[column], $event)"
+            (touchstart)="isPlayable && (playerId == stringToNumber(boardId)) && cellPressed(row[column], $event)"
+            (touchend)="isPlayable && (playerId == stringToNumber(boardId)) && cellReleased(row[column], $event)"
+            (contextmenu)="$event.preventDefault()">
             <mat-icon *ngIf="row[column].status === 'flag'">flag</mat-icon>
             <img *ngIf="row[column].status === 'clear' && row[column].mine" style="width:24px;height:24px"
                 src="assets/images/mine.svg">

@@ -14,6 +14,7 @@ export class GameComponent implements OnInit {
 
     board: Board = new Board(0, 0);
     displayedColumns = [];
+    timeoutHandler;
     @Input() rowSize = 10;
     @Input() numberOfMines = 4;
     @Input() boardId = '';
@@ -46,10 +47,31 @@ export class GameComponent implements OnInit {
         if (!!table) table.style.width = `${49 * this.rowSize}px`;
     }
 
+    cellPressed(cell: Cell, event) {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent)) {
+            this.timeoutHandler = setTimeout(() => {
+                this.flag(cell);
+                this.timeoutHandler = null;
+            }, 500);
+        }
+    }
+
+    cellReleased(cell: Cell, event) {
+        if (!this.timeoutHandler) {
+            if (event.button == 0 || (event.button == 1 && cell.status === 'clear')) this.checkCell(cell);
+            else if (event.button == 2) this.flag(cell);
+        }
+        else {
+            clearTimeout(this.timeoutHandler);
+            this.timeoutHandler = null;
+            this.checkCell(cell);
+        }
+    }
+
     checkCell(cell: Cell, fromServer = false) {
         cell = this.board.cells[cell.row][cell.column];
         this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
-        
+
         if (this.isFirstClick && !fromServer) return;
 
         if (cell.status === 'clear' && cell.surroundingMines != 0) this.checkSurroundings(this.board, cell);

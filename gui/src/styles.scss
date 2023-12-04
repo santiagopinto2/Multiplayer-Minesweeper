@@ -57,6 +57,8 @@ $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
     .disabled-icon:disabled {
         color: #969696;
     }
+
+    background-color: #303030;
 }
 
 .color-scheme-light {
@@ -72,8 +74,6 @@ $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
         color: #000000DE !important;
     }
 }
-
-
 
 .row {
     margin-left: 0;
