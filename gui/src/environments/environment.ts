@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    serverUrl: 'https://server.fablessb.com'
+    serverUrl: 'https://server.minesweepermelee.com'
 };
