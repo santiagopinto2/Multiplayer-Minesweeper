@@ -70,7 +70,6 @@ export class GameComponent implements OnInit {
 
     checkCell(cell: Cell, fromServer = false) {
         cell = this.board.cells[cell.row][cell.column];
-        //this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
 
         if (this.isFirstClick && !fromServer) return;
 
@@ -93,7 +92,6 @@ export class GameComponent implements OnInit {
     flag(cell: Cell, fromServer = false) {
         if (this.isFirstClick && !fromServer) return;
         cell = this.board.cells[cell.row][cell.column];
-        //this.gameUpdate.emit({ cell: cell, type: 'flag' });
         if (cell.status === 'flag') cell.status = 'hidden';
         else if (cell.status === 'hidden') cell.status = 'flag';
     }

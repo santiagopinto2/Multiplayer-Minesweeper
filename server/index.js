@@ -9,7 +9,7 @@ const { createAllBoards, createBoard } = require('./util/create-boards');
 
 
 io.on('connection', socket => {
-    console.log('A player has connected ');
+    console.log('A player has connected');
 
     socket.on('gameStart', ({ gameId, data }) => {
         io.to(gameId).emit('gameStart', { cells: createAllBoards(data.numberOfBoards, data.startingNumberOfMines), numberOfBoards: data.numberOfBoards, startingNumberOfMines: data.startingNumberOfMines });
@@ -19,7 +19,8 @@ io.on('connection', socket => {
     socket.on('gameJoin', ({ gameId }) => {
         socket.join(gameId);
         console.log('A player has joined the game ' + gameId);
-        socket.to(gameId).emit('gameJoin', 'A player has joined the game!');
+        const sockets = Array.from(io.sockets.adapter.rooms.get(gameId));
+        io.to(gameId).emit('gameJoin', { socketId: socket.id, sockets: sockets });
     });
 
     socket.on('gameUpdate', ({ gameId, data }) => {
@@ -28,6 +29,10 @@ io.on('connection', socket => {
 
     socket.on('newBoard', ({ gameId, data }) => {
         io.to(gameId).emit('newBoard', { boardId: data.boardId, cells: createBoard(data.mines, data.firstClick || null) });
+    });
+
+    socket.on('leaveGame', ({ gameId }) => {
+        socket.leave(gameId);
     });
 });
 

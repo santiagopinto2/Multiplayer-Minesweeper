@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { GameComponent } from '../game/game.component';
 import { SocketioService } from 'src/app/services/socketio.service';
 import { ActivatedRoute } from '@angular/router';
@@ -12,10 +12,11 @@ import { environment } from 'src/environments/environment';
     templateUrl: './play.component.html',
     styleUrls: ['./play.component.scss']
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit, OnDestroy {
 
     gameId: string;
     socket: any;
+    socketId = '';
 
     settingsFormControl = new FormGroup({
         numberOfBoards: new FormControl(5, [Validators.required, Validators.min(1), Validators.max(20)]),
@@ -27,7 +28,7 @@ export class PlayComponent implements OnInit {
     boardCounter = [0, 0];
     numberOfMines = [this.startingNumberOfMines.value, this.startingNumberOfMines.value];
     rowSize = [10, 10];
-    playerId = 1;
+    playerId = -1;
     playersCells = [];
     subscribeTimer: Subscription;
     startingTimer = 3;
@@ -62,6 +63,10 @@ export class PlayComponent implements OnInit {
         this.boards.changes.subscribe((data: any) => {
             this.assignBoards();
         });
+    }
+
+    ngOnDestroy(): void {
+        this.socketIoService.leaveGame(this.gameId);
     }
 
     gameStart() {
@@ -137,12 +142,19 @@ export class PlayComponent implements OnInit {
     }
 
     receiveGameJoin() {
-        this.socketIoService.receiveGameJoin().subscribe((message: string) => {
+        this.socketIoService.receiveGameJoin().subscribe((data: any) => {
+            if (this.socketId === '') this.socketId = data.socketId;
+            if (data.sockets.length === 1) return;
+
+            this.playerId = data.sockets.indexOf(this.socketId) == 0 ? 0 : 1;
+
+            let message = '';
+            message = this.playerId == 0 ? 'A player has joined the game!' : `You joined a player's game!`;
             this.snackbar.open(message, '', {
                 duration: 3000,
             });
-            this.playerId = 0;
-            this.playerJoined = true;
+
+            if (this.playerId == 0) this.playerJoined = true;
         });
     }
 

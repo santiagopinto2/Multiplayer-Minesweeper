@@ -5,7 +5,7 @@
                 <div class="row mt-2">
                     <div class="col-12 d-flex justify-content-center">
                         <button mat-raised-button class="details-text" style="margin-top: 10px"
-                            [disabled]="!playerJoined" (click)="gameStart()">Start Game</button>
+                            [disabled]="playerId != 0" (click)="gameStart()">Start Game</button>
                     </div>
                 </div>
                 <p class="m-3 text-center details-text">The first person to join this room will be the host. Only the host

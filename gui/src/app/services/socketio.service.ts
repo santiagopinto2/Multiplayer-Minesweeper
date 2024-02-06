@@ -30,6 +30,10 @@ export class SocketioService {
         this.socket.emit('newBoard', { gameId: gameId, data: data });
     }
 
+    leaveGame(gameId) {
+        this.socket.emit('leaveGame', { gameId: gameId });
+    }
+
     receiveGameJoin() {
         return new Observable(o => {
             this.socket.on('gameJoin', message => {
