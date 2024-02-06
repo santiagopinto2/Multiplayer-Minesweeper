@@ -50,7 +50,7 @@ export class GameComponent implements OnInit {
     cellPressed(cell: Cell, event) {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent)) {
             this.timeoutHandler = setTimeout(() => {
-                this.flag(cell);
+                this.sendGameUpdate(cell, 'flag');
                 this.timeoutHandler = null;
             }, 500);
         }
@@ -58,19 +58,19 @@ export class GameComponent implements OnInit {
 
     cellReleased(cell: Cell, event) {
         if (!this.timeoutHandler) {
-            if (event.button == 0 || (event.button == 1 && cell.status === 'clear')) this.checkCell(cell);
-            else if (event.button == 2) this.flag(cell);
+            if (event.button == 0 || (event.button == 1 && cell.status === 'clear')) this.sendGameUpdate(cell, 'checkCell');
+            else if (event.button == 2) this.sendGameUpdate(cell, 'flag');
         }
         else {
             clearTimeout(this.timeoutHandler);
             this.timeoutHandler = null;
-            this.checkCell(cell);
+            this.sendGameUpdate(cell, 'checkCell');
         }
     }
 
     checkCell(cell: Cell, fromServer = false) {
         cell = this.board.cells[cell.row][cell.column];
-        this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
+        //this.gameUpdate.emit({ cell: cell, type: 'checkCell' });
 
         if (this.isFirstClick && !fromServer) return;
 
@@ -93,7 +93,7 @@ export class GameComponent implements OnInit {
     flag(cell: Cell, fromServer = false) {
         if (this.isFirstClick && !fromServer) return;
         cell = this.board.cells[cell.row][cell.column];
-        this.gameUpdate.emit({ cell: cell, type: 'flag' });
+        //this.gameUpdate.emit({ cell: cell, type: 'flag' });
         if (cell.status === 'flag') cell.status = 'hidden';
         else if (cell.status === 'hidden') cell.status = 'flag';
     }
@@ -126,5 +126,9 @@ export class GameComponent implements OnInit {
 
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    sendGameUpdate(cell: Cell, type) {
+        this.gameUpdate.emit({ cell: cell, type: type });
     }
 }

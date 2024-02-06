@@ -18,8 +18,8 @@ export class PlayComponent implements OnInit {
     socket: any;
 
     settingsFormControl = new FormGroup({
-        numberOfBoards: new FormControl(10, [Validators.required, Validators.min(1), Validators.max(20)]),
-        startingNumberOfMines: new FormControl(10, [Validators.required, Validators.min(1), Validators.max(80)])
+        numberOfBoards: new FormControl(5, [Validators.required, Validators.min(1), Validators.max(20)]),
+        startingNumberOfMines: new FormControl(8, [Validators.required, Validators.min(1), Validators.max(80)])
     });
     numberOfBoards = this.settingsFormControl.get('numberOfBoards');
     startingNumberOfMines = this.settingsFormControl.get('startingNumberOfMines');
@@ -29,7 +29,6 @@ export class PlayComponent implements OnInit {
     rowSize = [10, 10];
     playerId = 1;
     playersCells = [];
-    event: any;
     subscribeTimer: Subscription;
     startingTimer = 3;
     gameStarted = false;
@@ -106,12 +105,7 @@ export class PlayComponent implements OnInit {
         if (this.playerId != boardId) return;
         event.boardId = boardId;
 
-        if (this.isFirstClick[boardId] && event.type === 'checkCell') {
-            this.event = event;
-            this.socketIoService.newBoard(this.gameId, { boardId: boardId, mines: this.numberOfMines[boardId], firstClick: event.cell });
-            return;
-        }
-
+        if (this.isFirstClick[boardId] && event.type === 'checkCell') this.socketIoService.newBoard(this.gameId, { boardId: boardId, mines: this.numberOfMines[boardId], firstClick: event.cell });
         this.socketIoService.gameUpdate(this.gameId, event);
     }
 
@@ -184,14 +178,7 @@ export class PlayComponent implements OnInit {
             if (!environment.production) console.log('receiveNewBoard', data);
             Object.assign(this.boards.toArray()[data.boardId].board, this.boards.toArray()[data.boardId].newBoard(null, data.cells));
 
-            if (this.playerId == data.boardId && this.isFirstClick[data.boardId]) {
-                this.isFirstClick[data.boardId] = false;
-                this.boards.toArray()[data.boardId].isFirstClick = false;
-                if (this.event.type === 'checkCell') this.boards.toArray()[data.boardId].checkCell(this.event.cell);
-                else if (this.event.type === 'flag') this.boards.toArray()[data.boardId].flag(this.event.cell);
-            }
-            else this.isFirstClick[data.boardId] = true;
-
+            this.isFirstClick[data.boardId] = !this.isFirstClick[data.boardId];
             this.isPlayable[data.boardId] = true;
         });
     }

@@ -23,7 +23,7 @@ io.on('connection', socket => {
     });
 
     socket.on('gameUpdate', ({ gameId, data }) => {
-        socket.to(gameId).emit('gameUpdate', data);
+        io.to(gameId).emit('gameUpdate', data);
     });
 
     socket.on('newBoard', ({ gameId, data }) => {
