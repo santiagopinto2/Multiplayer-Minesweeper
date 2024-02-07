@@ -8,7 +8,8 @@
                             [disabled]="playerId != 0" (click)="gameStart()">Start Game</button>
                     </div>
                 </div>
-                <p class="m-3 text-center details-text">The first person to join this room will be the host. Only the host
+                <p class="m-3 text-center details-text">The first person to join this room will be the host. Only the
+                    host
                     is able to start the game. The Start Game button will be available once a second player has joined
                     this room.
                 </p>
@@ -27,14 +28,14 @@
     </div>
 </div>
 
+
+
 <div *ngIf="gameStarted">
     <div class="row mt-4" style="width: 100%">
         <div class="col-lg-6 mb-4 mb-lg-0">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <mat-card class="mat-elevation-z4">
-                        <p class="game-stats m-3">Number of Mines: {{numberOfMines[0]}}</p>
-                    </mat-card>
+                    <p class="game-stats m-3">{{names[0]}}</p>
                 </div>
             </div>
             <div class="row">
@@ -48,15 +49,17 @@
                     <p *ngIf="gameFinished && hasWon[0]" class="board-text">Winner!</p>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6 mr-0">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <mat-card class="mat-elevation-z4">
-                        <p class="game-stats m-3">Number of Mines: {{numberOfMines[1]}}</p>
-                    </mat-card>
+                    <p class="game-stats m-3">Number of Mines: {{numberOfMines[0]}}</p>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-6 mr-0">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <p class="game-stats m-3">{{names[1]}}</p>
+                </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="1"
@@ -68,13 +71,18 @@
                     <p *ngIf="gameFinished && hasWon[1]" class="board-text">Winner!</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <p class="game-stats m-3">Number of Mines: {{numberOfMines[1]}}</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-2">
         <div class="col-12 d-flex justify-content-center">
             <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text mat-elevation-z4"
-                (click)="gameStart()" [disabled]="!settingsFormControl.valid || playerId == 1">Restart</button>
+                (click)="gameStart()" [disabled]="!settingsFormControl.valid || playerId != 0">Restart</button>
         </div>
     </div>
 

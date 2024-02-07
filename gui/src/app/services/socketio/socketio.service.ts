@@ -13,9 +13,9 @@ export class SocketioService {
 
     constructor() { }
 
-    connect(gameId) {
+    connect(gameId, data) {
         this.socket = io(environment.serverUrl);
-        this.socket.emit('gameJoin', { gameId: gameId });
+        this.socket.emit('gameJoin', { gameId: gameId, data: data });
     }
 
     gameStart(gameId, data) {

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { GameComponent } from '../game/game.component';
-import { SocketioService } from 'src/app/services/socketio.service';
+import { SocketioService } from 'src/app/services/socketio/socketio.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LocalService } from 'src/app/services/local/local.service';
 
 @Component({
     selector: 'app-play',
@@ -15,7 +16,6 @@ import { environment } from 'src/environments/environment';
 export class PlayComponent implements OnInit, OnDestroy {
 
     gameId: string;
-    socket: any;
     socketId = '';
 
     settingsFormControl = new FormGroup({
@@ -28,6 +28,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     boardCounter = [0, 0];
     numberOfMines = [this.startingNumberOfMines.value, this.startingNumberOfMines.value];
     rowSize = [10, 10];
+    names = ['', ''];
     playerId = -1;
     playersCells = [];
     subscribeTimer: Subscription;
@@ -46,12 +47,13 @@ export class PlayComponent implements OnInit, OnDestroy {
     constructor(
         private socketIoService: SocketioService,
         private route: ActivatedRoute,
-        private snackbar: MatSnackBar
+        private snackbar: MatSnackBar,
+        private localStorage: LocalService
     ) { }
 
     ngOnInit(): void {
         this.gameId = this.route.snapshot.paramMap.get('id');
-        this.socketIoService.connect(this.gameId);
+        this.socketIoService.connect(this.gameId, { name: this.localStorage.getData('name') });
 
         this.receiveGameJoin();
         this.receiveGameStart();
@@ -143,13 +145,16 @@ export class PlayComponent implements OnInit, OnDestroy {
 
     receiveGameJoin() {
         this.socketIoService.receiveGameJoin().subscribe((data: any) => {
+            if (!environment.production) console.log('receiveGameJoin', data);
             if (this.socketId === '') this.socketId = data.socketId;
             if (data.sockets.length === 1) return;
 
-            this.playerId = data.sockets.indexOf(this.socketId) == 0 ? 0 : 1;
+            this.playerId = data.sockets.findIndex(socket => socket.id === this.socketId);
+            this.names[0] = data.sockets[0].name;
+            this.names[1] = data.sockets[1].name;
 
             let message = '';
-            message = this.playerId == 0 ? 'A player has joined the game!' : `You joined a player's game!`;
+            message = data.sockets.length - 1 == this.playerId ? `You joined ${data.sockets[0].name}'s game!` : `${data.sockets[data.sockets.length - 1].name} has joined the game!`;
             this.snackbar.open(message, '', {
                 duration: 3000,
             });
@@ -163,7 +168,7 @@ export class PlayComponent implements OnInit, OnDestroy {
             if (!environment.production) console.log('receiveGameStart', data);
             this.gameStarted = true;
 
-            if (this.playerId == 1) {
+            if (this.playerId != 0) {
                 this.numberOfBoards.disable();
                 this.startingNumberOfMines.disable();
             }

@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ColorSchemeService } from './services/color-scheme.service';
+import { ColorSchemeService } from './services/color-scheme/color-scheme.service';
 
 
 @Component({

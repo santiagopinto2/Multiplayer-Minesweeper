@@ -16,10 +16,17 @@ io.on('connection', socket => {
         console.log('A new game is starting', data);
     });
 
-    socket.on('gameJoin', ({ gameId }) => {
+    socket.on('gameJoin', ({ gameId, data }) => {
         socket.join(gameId);
-        console.log('A player has joined the game ' + gameId);
-        const sockets = Array.from(io.sockets.adapter.rooms.get(gameId));
+        socket.name = data.name;
+
+        let sockets = Array.from(io.sockets.adapter.rooms.get(gameId));
+        sockets = sockets.map((id) => ({ id }));
+        sockets.forEach(sock => {
+            let result = Array.from(io.sockets.sockets).find(s => s[1].id === sock.id)[1].name;
+            sock.name = result;
+        });
+        
         io.to(gameId).emit('gameJoin', { socketId: socket.id, sockets: sockets });
     });
 
