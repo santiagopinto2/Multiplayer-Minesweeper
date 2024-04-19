@@ -10,6 +10,7 @@ import { GameComponent } from './components/game/game.component';
 import { PlayComponent } from './components/play/play.component';
 import { AboutComponent } from './components/about/about.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { LobbyComponent } from './components/lobby/lobby.component';
         GameComponent,
         PlayComponent,
         AboutComponent,
-        LobbyComponent
+        LobbyComponent,
+        ChatComponent
     ],
     imports: [
         BrowserModule,

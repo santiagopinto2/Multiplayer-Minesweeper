@@ -28,7 +28,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     boardCounter = [0, 0];
     numberOfMines = [this.startingNumberOfMines.value, this.startingNumberOfMines.value];
     rowSize = [10, 10];
-    names = ['', ''];
+    playersInfo = [];
     playerId = -1;
     playersCells = [];
     subscribeTimer: Subscription;
@@ -150,8 +150,7 @@ export class PlayComponent implements OnInit, OnDestroy {
             if (data.sockets.length === 1) return;
 
             this.playerId = data.sockets.findIndex(socket => socket.id === this.socketId);
-            this.names[0] = data.sockets[0].name;
-            this.names[1] = data.sockets[1].name;
+            for (let i = 0; i < data.sockets.length; i++) this.playersInfo.push({ id: i, name: data.sockets[i].name });
 
             let message = '';
             message = data.sockets.length - 1 == this.playerId ? `You joined ${data.sockets[0].name}'s game!` : `${data.sockets[data.sockets.length - 1].name} has joined the game!`;

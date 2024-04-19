@@ -35,7 +35,7 @@
         <div class="col-lg-6 mb-4 mb-lg-0">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <p class="game-stats m-3">{{names[0]}}</p>
+                    <p class="game-stats m-3">{{playersInfo[0].name}}</p>
                 </div>
             </div>
             <div class="row">
@@ -58,7 +58,7 @@
         <div class="col-lg-6 mr-0">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <p class="game-stats m-3">{{names[1]}}</p>
+                    <p class="game-stats m-3">{{playersInfo[1].name}}</p>
                 </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
@@ -115,4 +115,10 @@
             </div>
         </div>
     </div>
+
+    <div class="row my-2">
+        <div class="col-12">
+            <app-chat [playerId]="playerId" [playersInfo]="playersInfo"></app-chat>
+        </div>
+    </div>    
 </div>

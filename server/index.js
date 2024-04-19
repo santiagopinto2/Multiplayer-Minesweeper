@@ -41,6 +41,10 @@ io.on('connection', socket => {
     socket.on('leaveGame', ({ gameId }) => {
         socket.leave(gameId);
     });
+
+    socket.on('sendMessage', ({ gameId, data }) => {
+        io.to(gameId).emit('sendMessage', data );
+    });
 });
 
 

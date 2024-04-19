@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="inbox-message">
+        <div class="messages">
+            <div class="message-history" id="messageHistory">
+                <li class="message" *ngFor="let message of messages">
+                    <div *ngIf="message.id != playerId; then incomingMessage; else outgoingMessage"></div>
+                    <ng-template #incomingMessage>
+                        <p style="margin-bottom: 0; margin-left: 61px; font-size: 11px">{{message.name}}</p>
+                        <div class="incoming-message">
+                            <div class="incoming-message-img">
+                                <img src="assets/images/avatar.png" />
+                            </div>
+                            <div class="received-message">
+                                <div class="received-width-message">
+                                    <p>{{message.message}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #outgoingMessage>
+                        <div class="outgoing-message">
+                            <div class="sent-message">
+                                <p>{{message.message}}</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+            </div>
+            <div class="type-message">
+                <form class="input-message-write" (ngSubmit)="sendMessage()">
+                    <input type="text" class="write-message themed-text" placeholder="Type a message" name="newMessage"
+                        [(ngModel)]="newMessage" />
+                    <button mat-fab class="message-send-btn" type="submit">
+                        <mat-icon style="transform: scale(0.8)">send</mat-icon>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
