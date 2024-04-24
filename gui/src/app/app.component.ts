@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { ColorSchemeService } from './services/color-scheme/color-scheme.service';
 
 
@@ -7,17 +7,18 @@ import { ColorSchemeService } from './services/color-scheme/color-scheme.service
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
 
     title = 'minesweeper';
     windowSize;
     
-    constructor(public colorSchemeService: ColorSchemeService) {
+    constructor(public colorSchemeService: ColorSchemeService, private cdr: ChangeDetectorRef) {
         this.colorSchemeService.load();
     }
 
-    ngOnInit() {
+    ngAfterViewInit() {
         this.windowSize = window.screen.width;
+        this.cdr.detectChanges();
     }
 
     @HostListener('window:resize', ['$event'])

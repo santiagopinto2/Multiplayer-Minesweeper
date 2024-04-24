@@ -55,70 +55,72 @@
                 </div>
             </div>
         </div>
+
         <div class="col-lg-6 mr-0">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <p class="game-stats m-3">{{playersInfo[1].name}}</p>
                 </div>
-            <div class="row">
-                <div class="col-12 d-flex justify-content-center">
-                    <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="1"
-                        [playerId]="playerId" [gameStarting]="gameStarting" [hasWon]=" hasWon[1]"
-                        [isPlayable]="isPlayable[1]" [isFirstClick]="isFirstClick[1]" (wonEmitter)="won($event, 1)"
-                        (gameUpdate)="gameUpdate($event, 1)" (lostEmitter)="lost($event, 1)">
-                    </app-game>
-                    <p *ngIf="gameStarting && playerId == 1" class="board-text">{{startingTimer}}</p>
-                    <p *ngIf="gameFinished && hasWon[1]" class="board-text">Winner!</p>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <app-game [rowSize]="rowSize[1]" [numberOfMines]="numberOfMines[1]" boardId="1"
+                            [playerId]="playerId" [gameStarting]="gameStarting" [hasWon]=" hasWon[1]"
+                            [isPlayable]="isPlayable[1]" [isFirstClick]="isFirstClick[1]" (wonEmitter)="won($event, 1)"
+                            (gameUpdate)="gameUpdate($event, 1)" (lostEmitter)="lost($event, 1)">
+                        </app-game>
+                        <p *ngIf="gameStarting && playerId == 1" class="board-text">{{startingTimer}}</p>
+                        <p *ngIf="gameFinished && hasWon[1]" class="board-text">Winner!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <p class="game-stats m-3">Number of Mines: {{numberOfMines[1]}}</p>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row mt-2 d-flex justify-content-around">
+        <div class="col-lg-6 mb-4 lower-column">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <p class="game-stats m-3">Number of Mines: {{numberOfMines[1]}}</p>
+                    <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text mat-elevation-z4"
+                        (click)="gameStart()" [disabled]="!settingsFormControl.valid || playerId != 0">Restart</button>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 d-flex justify-content-center">
+                    <p class="settings-header">Levels</p>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <p class="settings-header">Starting Number of Mines</p>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 d-flex justify-content-center">
+                    <form [formGroup]="settingsFormControl">
+                        <mat-form-field class="settings-input" appearance="outline">
+                            <input formControlName="numberOfBoards" class="themed-text" type="number" matInput min="1"
+                                max="20" (input)="settingsFormatter(numberOfBoards, 20)">
+                        </mat-form-field>
+                    </form>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <form [formGroup]="settingsFormControl">
+                        <mat-form-field class="settings-input" appearance="outline">
+                            <input formControlName="startingNumberOfMines" class="themed-text" type="number" matInput
+                                min="1" max="80" (input)="settingsFormatter(startingNumberOfMines, 80)">
+                        </mat-form-field>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row mt-2">
-        <div class="col-12 d-flex justify-content-center">
-            <button mat-raised-button *ngIf="gameStarted" class="m-4 details-text mat-elevation-z4"
-                (click)="gameStart()" [disabled]="!settingsFormControl.valid || playerId != 0">Restart</button>
-        </div>
-    </div>
-
-    <div>
-        <div class="row">
-            <div class="col-6 d-flex justify-content-center">
-                <p class="settings-header">Levels</p>
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                <p class="settings-header">Starting Number of Mines</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-6 d-flex justify-content-center">
-                <form [formGroup]="settingsFormControl">
-                    <mat-form-field class="settings-input" appearance="outline">
-                        <input formControlName="numberOfBoards" class="themed-text" type="number" matInput min="1"
-                            max="20" (input)="settingsFormatter(numberOfBoards, 20)">
-                    </mat-form-field>
-                </form>
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                <form [formGroup]="settingsFormControl">
-                    <mat-form-field class="settings-input" appearance="outline">
-                        <input formControlName="startingNumberOfMines" class="themed-text" type="number" matInput
-                            min="1" max="80" (input)="settingsFormatter(startingNumberOfMines, 80)">
-                    </mat-form-field>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="row my-2">
-        <div class="col-12">
+        <div class="col-lg-6 lower-column">
             <app-chat [playerId]="playerId" [playersInfo]="playersInfo"></app-chat>
         </div>
-    </div>    
+    </div>
 </div>
