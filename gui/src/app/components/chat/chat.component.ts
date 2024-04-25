@@ -11,7 +11,6 @@ import { environment } from 'src/environments/environment';
 export class ChatComponent {
 
     gameId: string;
-    /* messages = [{ id: 0, name: "Fable", text: "hahaha" }, { id: 1, name: "GOOSE!", text: "test" }]; */
     messages = [];
     newMessage = '';
 

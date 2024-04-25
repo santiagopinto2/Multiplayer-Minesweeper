@@ -4,13 +4,19 @@ It's a new way to play Minesweeper that lets you go head-to-head against your fr
 
 Other attempts of adding multiplayer to this game have never felt right. Some are turn based, others have too many people with no identity, all have little true interaction. Hence, the hat was thrown into the ring, to do it better than anyone else.
 
+![Game board in action](/gui/src/assets/images/about-page/1-dark-landscape.png)
+
 # How Do You Play?
 
 The premise is the same as always. Open up as much of the board as you can while avoiding mines. The difference being you compete with your opponent in speed and accuracy.
 
+![Game ended](/gui/src/assets/images/about-page/2-dark-landscape.png)
+
 When the game starts, there is a certain number of levels that must be finished for a player to win. The number of levels can be modified at any time by the host. When a player completes their board, a new board will generate and the player will move on to the next level.
 
 With each level reached, the number of mines will increase by one. The number of mines in the first level can also be changed by the host. If a player detonates a mine, the board will be wiped and the level will reset. Don't worry, there's no way to go back a level.
+
+![Game settings](/gui/src/assets/images/about-page/3-dark-landscape.png)
 
 # Who Made Minesweeper Melee?
 
